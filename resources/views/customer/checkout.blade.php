@@ -6,14 +6,10 @@
 <br>
 <section class="main-content">				
 	<div class="row">
-	@if(session('notification'))
-<div class="alert alert-success">
-	{{session('notification')}}
-</div>
-@endif
 		<form action="{{ url('checkout') }}" method="post">
 			<div class="span5">		
-			<input type="hidden" name="_token" value="{{csrf_token()}}">			
+				<input type="hidden" name="_token" value="{{csrf_token()}}">	
+				
 				<h4 class="title"><span class="text"><strong>Đơn hàng</strong></span></h4>
 				<table class="table table-striped" style="border: 1px solid #eaeaea;">
 					<thead>
@@ -51,9 +47,16 @@
 						<label class="control-label">Họ tên
 							<span style="color: red;">*</span>
 						</label>
-
 						<div class="controls">
 							<input type="text" name="name" class="input-xlarge">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Email
+							<span style="color: red;">*</span>
+						</label>
+						<div class="controls">
+							<input type="email" name="email" class="input-xlarge">
 						</div>
 					</div>
 					<div class="control-group">
@@ -71,12 +74,26 @@
 						<div class="controls">
 							<input type="text" name="phone" class="input-xlarge">
 						</div>
-					</div>		
+					</div>	
+					<div class="control-group">
+						<label class="control-label">Ghi chú đơn hàng
+						</label>
+						<div class="controls">
+							<input type="text" name="note" class="input-xlarge">
+						</div>
+					</div>			
 					<hr>
-					<div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
+					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
 				</fieldset>				
 			</div>	
 		</form>				
 	</div>
 </section>
+<script >
+	$(document).ready(function () {
+		$("#actions").click(function (){
+			alert(Bạn đã đặt hàng thành công, chúng tôi sẽ sớm liên lạc đến bạn.);
+		})
+	});
+</script>
 @endsection

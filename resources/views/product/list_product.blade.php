@@ -17,9 +17,9 @@
 				@foreach($product_cate as $pro)
 				<li class="span3">
 					<div class="product-box">												
-						<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}"></a><br/>
+						<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" height="250px;"></a><br/>
 						<a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
-						<a href="#" class="category">Suspendisse aliquet</a>
+						<a class="category">{{$name_cate->name}}</a>
 						<p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
 					</div>
 				</li>

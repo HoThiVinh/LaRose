@@ -13,9 +13,6 @@
                 <div class="span12">
                     <h4 class="title">
                         <span class="pull-left"><span class="text"><span class="line">Sản phẩm nổi bật</span></span></span>
-                        <span class="pull-right">
-                            <a class="left button" href="#myCarousel" data-slide="prev"></a><a class="right button" href="#myCarousel" data-slide="next"></a>
-                        </span>
                     </h4>
                     <div id="myCarousel" class="myCarousel carousel slide">
                         <div class="carousel-inner">
@@ -24,7 +21,7 @@
                                     @foreach( $feature_product as $pro)
                                     <li class="span3">
                                         <div class="product-box">
-                                            <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" style="width: 200px; height:200px;" alt="" /></a></p>
+                                            <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" style="width: 200px; height:250px;" alt="" /></a></p>
                                             <a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
                                             <p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
                                         </div>
@@ -41,9 +38,6 @@
                 <div class="span12">
                     <h4 class="title">
                         <span class="pull-left"><span class="text"><span class="line">Sản phẩm mới</span></span></span>
-                        <span class="pull-right">
-                            <a class="left button" href="#myCarousel-2" data-slide="prev"></a><a class="right button" href="#myCarousel-2" data-slide="next"></a>
-                        </span>
                     </h4>
                     <div id="myCarousel-2" class="myCarousel carousel slide">
                         <div class="carousel-inner">
@@ -52,7 +46,7 @@
                                 @foreach($latest_product as $pro)
                                     <li class="span3">
                                         <div class="product-box">
-                                            <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" alt="" /></a></p>
+                                            <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" alt="" style="width: 200px; height:250px;" /></a></p>
                                             <a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
                                             <p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
                                         </div>

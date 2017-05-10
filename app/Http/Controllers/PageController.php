@@ -13,7 +13,6 @@ use App\Product;
 use App\Category_product;
 use App\Image;
 use App\Manufacturer;
-use Cart;
 use App\Customer;
 use App\Review;
 use App\CustomerGroup;
@@ -27,6 +26,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Requests;
 use App\Order;
 use App\OrderDetail;
+use Cart;
 
 
 
@@ -71,23 +71,23 @@ class PageController extends Controller
   public function getContact()
   {     
    return view('page.contact');
-  }
-  public function postContact(Request $request)
-  {
+ }
+ public function postContact(Request $request)
+ {
    $data = [
-  'ten'=>Request::input('name'), 
-  'emails'=>Request::input('email'),
-  'tinnhan'=>Request::input('body')
-  ];
-  Mail::send('emails.blanks', $data, function ($msg)
-  {
+   'ten'=>Request::input('name'), 
+   'emails'=>Request::input('email'),
+   'tinnhan'=>Request::input('body')
+   ];
+   Mail::send('emails.blanks', $data, function ($msg)
+   {
     $msg->from('vinhht.1993@gmail.com', 'Hồ Vinh');
     $msg->to('hovinh20122806@gmail.com', 'VinhHT')->subject('Đây là mail Larose');
   });
-  echo "<script>
-  alert('Cám ơn bạn đã góp ý. Chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất');
-  window.location = '" .url('./')."'
-</script>";
+   echo "<script>
+   alert('Cám ơn bạn đã góp ý. Chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất');
+   window.location = '" .url('./')."'
+ </script>";
 }
 //Detail Product
 public function getDetailProduct($id){
@@ -96,157 +96,187 @@ public function getDetailProduct($id){
   $image = Image::where('product_id', $id)->get();
   $product_related = Product::where('category_id',$product->category_id)->where('id','<>',$id)->orderBy('id', 'DESC')->take(4)->get();
   $product_review = Review::where('product_id', $id)->orderBy('created_at')->get();
-    //$product_customer_review = Customer::where('id',$product_review->customer_id)->get();
   return view('product.detail_product',['product' => $product,'product_related' => $product_related, 'image'=>$image,'manufact'=>$manufact, 'product_review'=>$product_review]);
 }
 //List Product By Category Id
 public function getListProductByCategoryId($id)
 {
-  $product_cate = Product::where('category_id', $id)->paginate(1);
+  $product_cate = Product::where('category_id', $id)->paginate(2);
   $cate = Category::where('id',$product_cate[0]->category_id)->first();
+  $name_cate = Category::where('id', $id)->first();
   $menu_cate = Category::where('parent_id',$cate->parent_id)->get();
-  return view('product.list_product',compact('product_cate','menu_cate', 'cate'));
+  return view('product.list_product',compact('product_cate','menu_cate', 'cate', 'name_cate'));
 }
-  public function getLogin () {
-      return view('customer.login');
-    }
-    public function postLogin(Request $request)
-    {
-        $this->validate($request,[
-            'email'   => 'required|email',
-            'password'  => 'required'
-            ],[
-            'email.required'    => 'Chưa nhập email',
-            'password.required'   => 'Chưa nhập mật khẩu',     
-            ]);
-        $login = [
-        'email' => $request->email,
-        'password' => $request->password
-        ];
-        
-        if(Auth::guard('customer')->attempt($login))
-        {
-            return redirect('/');
-        }
-        else {
-            return redirect("login")->with('notification', 'Tài khoản hoặc mật khẩu không đúng');
-        }
-    }
+public function getLogin () {
+  return view('customer.login');
+}
+public function postLogin(Request $request)
+{
+  $this->validate($request,[
+    'email'   => 'required|email',
+    'password'  => 'required'
+    ],[
+    'email.required'    => 'Chưa nhập email',
+    'password.required'   => 'Chưa nhập mật khẩu',     
+    ]);
+  $login = [
+  'email' => $request->email,
+  'password' => $request->password
+  ];
 
-    public function getRegister() {
-       return view('customer.register');
-   }
-
-   public function postRegister(Request $request)
-   {
-      $this->validate($request,[
-        'name'    => 'required|min:3|max:32',
-        'email'   => 'required|email|unique:customer,email',
-        'password'  => 'required|min:4|max:32',
-        'passwordAgain' => 'required|same:password',
-        'address' =>'required',
-        'phone' => 'required'
-        ],[
-        'name.required'     => 'Chưa nhập họ tên',
-        'name.min'        => 'Tên quá ngắn',
-        'name.max'        => 'Tên quá dài',
-        'email.required'    => 'Chưa nhập email',
-        'email.email'       => 'Email không đúng định dạng',
-        'email.unique'      => 'Email đã tồn tại',
-        'passwordAgain.required' => 'Nhập lại mật khẩu',
-        'passwordAgain.same' => 'Mật khẩu không khớp',
-        'password.required'   => 'Chưa nhập mật khẩu',
-        'password.min'      => 'Mật khẩu quá ngắn',
-        'password.max'      => 'Mật khẩu quá dài',
-        'address.required'     => 'Chưa nhập địa chỉ',
-        'phone.required'     => 'Chưa nhập số điện thoại',
-        ]);
-      $customer = new Customer;
-      $customer->name = $request->input('name');
-      $customer->email = $request->input('email');
-      $customer->password = bcrypt($request->input('password'));
-      $customer->address = $request->input('address');
-      $customer->phone = $request->input('phone');
-      $customer->bank = $request->input('bank');
-      $customer->bank_account = $request->input('bank_account');
-      $customer->customer_group_id = 1;
-      $customer->note = $request->input('note');   
-      $customer->save();
-      return redirect('/login')->with('notification', 'Mời bạn đăng nhập tài khoản');
-  }
-    public function getLogout() {
-      Auth::guard('customer')->logout();
-      return redirect('/');
-    }
-
-    public function getProfile()
-    {
-      return view('customer.profile');
-    }
-    
-
-  public function addItem($productId)
+  if(Auth::guard('customer')->attempt($login))
   {
-    $product_buy = Product::where('id',$productId)->first();
-    Cart::add(array(
-      'id' => $productId,
-      'name' => $product_buy->name,
-      'qty' =>1,  
-      'price' => $product_buy->web_price,
-      'options' =>array('img'=>$product_buy->default_image)
-      ));
-    $content = Cart::content();
-     return redirect()->route('cart');
+    return redirect('/');
   }
-
-  public function getCart(){
-     $content = Cart::content();
-     $subtotal= Cart::subtotal();
-    return view('customer.cart', compact('content','subtotal'));
+  else {
+    return redirect("login")->with('notification', 'Tài khoản hoặc mật khẩu không đúng');
   }
+}
 
-  public function deleteItem($id)
-  {
-    Cart::remove($id);
-    return redirect()->route('cart');
+public function getRegister() {
+ return view('customer.register');
+}
+
+public function postRegister(Request $request)
+{
+  $this->validate($request,[
+    'name'    => 'required|min:3|max:32',
+    'email'   => 'required|email|unique:customer,email',
+    'password'  => 'required|min:4|max:32',
+    'passwordAgain' => 'required|same:password',
+    'address' =>'required',
+    'phone' => 'required'
+    ],[
+    'name.required'     => 'Chưa nhập họ tên',
+    'name.min'        => 'Tên quá ngắn',
+    'name.max'        => 'Tên quá dài',
+    'email.required'    => 'Chưa nhập email',
+    'email.email'       => 'Email không đúng định dạng',
+    'email.unique'      => 'Email đã tồn tại',
+    'passwordAgain.required' => 'Nhập lại mật khẩu',
+    'passwordAgain.same' => 'Mật khẩu không khớp',
+    'password.required'   => 'Chưa nhập mật khẩu',
+    'password.min'      => 'Mật khẩu quá ngắn',
+    'password.max'      => 'Mật khẩu quá dài',
+    'address.required'     => 'Chưa nhập địa chỉ',
+    'phone.required'     => 'Chưa nhập số điện thoại',
+    ]);
+  $customer = new Customer;
+  $customer->name = $request->input('name');
+  $customer->email = $request->input('email');
+  $customer->password = bcrypt($request->input('password'));
+  $customer->address = $request->input('address');
+  $customer->phone = $request->input('phone');
+  $customer->bank = $request->input('bank');
+  $customer->bank_account = $request->input('bank_account');
+  $customer->customer_group_id = 23;
+  $customer->note = $request->input('note');   
+  $customer->save();
+  return redirect('/login')->with('notification', 'Mời bạn đăng nhập tài khoản');
+}
+public function getLogout() {
+  Auth::guard('customer')->logout();
+  return redirect('/');
+}
+
+public function getProfile()
+{
+  return view('customer.profile');
+}
+
+
+public function addItem(Request $request, $productId)
+{
+  $product_buy = Product::where('id',$productId)->first();
+  Cart::add(array(
+    'id' => $productId,
+    'name' => $product_buy->name,
+    'qty' =>1,  
+    'price' => $product_buy->web_price,
+    'options' =>array('img'=>$product_buy->default_image)
+    ));
+  $content = Cart::content();
+  
+//dd($content);
+    // $oldCart = Session('cart') ? Session::get('cart'):null;
+    // $cart = new Cart($oldCart);
+    // $cart->add($product, $id);
+    // $request->session()->put('cart', $cart);
+  return redirect()->route('cart');
+}
+
+public function getCart(){
+ $content = Cart::content();
+ $subtotal= Cart::subtotal();
+ return view('customer.cart', compact('content','subtotal'));
+}
+
+public function deleteItem($id)
+{
+  Cart::remove($id);
+  return redirect()->route('cart');
+}
+
+public function updateCart(Request $request){
+  if($request->ajax()){
+    $id = $request::get('id');
+    $qty = $request::get('qty');
+    Cart::update($id, $qty);
+    echo "oke";
   }
+}
 
-  public function updateCart(Request $request){
-        if($request->ajax()){
-          $id = $request::get('id');
-          $qty = $request::get('qty');
-          Cart::update($id, $qty);
-          echo "oke";
-        }
-    }
+public function getCheckout(){
+  $content = Cart::content();
+  $subtotal= Cart::subtotal();
+  return view('customer.checkout', compact('content','subtotal'));
 
-  public function getCheckout(){
-    $content = Cart::content();
-     $subtotal= Cart::subtotal();
-    return view('customer.checkout', compact('content','subtotal'));
+}
+public function postCheckout(Request $request){
+  $content = Cart::content();
+  $subtotal= Cart::subtotal();
+  $subtotal = (int)$subtotal;
 
-  }
-  public function postCheckout(Request $request){
-    $content = Cart::content();
-     $subtotal= Cart::subtotal();
-   
-            $new = new Order();
-            $new->created_by = 1;
-            $new->customer_id = $request->input('customer_id');
-            $new->customer_group_id = 1;
-            $new->payment_method =$request-> input('payment_method');
-            $new->bank =$request->input('bank');
-            $new->bank_account =$request->input('bank_account');
 
-            $new->contact_name =$request->input('name');
-            $new->contact_address =$request->input('address');
-            $new->contact_phone =$request->input('phone');
-            $new->total = 1;
-            $new->status = 1;
-            $new->save();
-            return redirect('/')->with('notification', 'ddđ');
-        
-  }
+  $customer = new Customer();
+  $customer->name = $request->input('name');
+  $customer->email = $request->input('email');
+  $customer->password = bcrypt($request->input('password'));
+  $customer->address = $request->input('address');
+  $customer->phone = $request->input('phone');
+  $customer->customer_group_id = 23;
+  $customer->note = $request->input('note');   
+  $customer->bank = $request->input('bank');
+  $customer->bank_account = $request->input('bank_account');
+  $customer->save();
+
+  $new = new Order();
+  $new->created_by = $customer->id;
+  $new->customer_id = $customer->id;
+  $new->customer_group_id = 1;
+  $new->email =$request-> input('email');
+  $new->name =$request->input('name');
+  $new->address =$request->input('address');
+  $new->phone =$request->input('phone');
+  $new->total = $subtotal;
+  $new->status = 1;
+  $new->save();
+  foreach ($content as $key => $value) {
+  
+  $orderDetail = new OrderDetail();
+  $orderDetail->order_id = $new->id;
+  $orderDetail->product_id = $value->id;
+  $orderDetail->quantity = $value->qty;
+  $orderDetail->total = $value->price;
+  $orderDetail->save();
+
+  Cart::destroy();
+
+  
+}
+  return redirect('/');
+
+}
 }
 
 
