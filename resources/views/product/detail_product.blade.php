@@ -45,8 +45,8 @@
 					<form class="form-inline">
 						<p>&nbsp;</p>
 						<label>Số lượng: </label>
-						<input type="text" class="span1" placeholder="0">
-						<a href="{!! url('addproducttocart',[$product->id,$product->name]) !!}">Thêm vào giỏ</a>
+						<input type="text" class="span1" placeholder="1">
+						<a href="{!! url('addproducttocart',[$product->id,$product->name]) !!}" class="btn btn-inverse large">Thêm vào giỏ</a>
 					</form>
 				</div>							
 			</div>

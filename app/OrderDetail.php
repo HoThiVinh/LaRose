@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
 {
-    protected $table = 'detail_order';
+    protected $table = 'order_detail';
 
     public function product()
     {
         return $this->hasOne('App\Product', 'id', 'product_id');
+    }
+
+    public function order()
+    {
+    	return $this->belongsTo('App\Order');
     }
 }

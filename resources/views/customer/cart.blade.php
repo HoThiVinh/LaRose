@@ -51,17 +51,10 @@
 			<p class="buttons center">				
 				
 				 <a href="{{ url('/') }}" class="btn btn-warning pull-left">Tiếp tục mua sắm</a>
-				<button class="btn btn-warning pull-right" type="submit" id="checkout">Thanh toán</button>
+				<a href="{{ url('checkout') }}" class="btn btn-warning pull-right" >Thanh toán</a>
 
 			</p>					
 		</div>
 	</div>
 </section>	
-<script>
-	$(document).ready(function() {
-		$('#checkout').click(function (e) {
-			document.location.href = "checkout.html";
-		})
-	});
-</script>	
 @endsection

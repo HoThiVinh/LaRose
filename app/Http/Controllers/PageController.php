@@ -25,6 +25,8 @@ use Session;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Requests;
+use App\Order;
+use App\OrderDetail;
 
 
 
@@ -48,6 +50,15 @@ class PageController extends Controller
     view()->share('manufacturer', $manufacturer);
     $customer = Customer::all();
     view()->share('customer', $customer);
+    $order = Order::all();
+    view()->share('order', $order);
+    $orderDetail = OrderDetail::all();
+    view()->share('orderdetail', $orderDetail);
+
+
+    if(Auth::guard('customer')->check()){
+      return view()->share('customerlogin', Auth::guard('customer')->Customer());
+    }
     
   }
     //home
@@ -167,6 +178,11 @@ public function getListProductByCategoryId($id)
       Auth::guard('customer')->logout();
       return redirect('/');
     }
+
+    public function getProfile()
+    {
+      return view('customer.profile');
+    }
     
 
   public function addItem($productId)
@@ -203,6 +219,34 @@ public function getListProductByCategoryId($id)
           echo "oke";
         }
     }
+
+  public function getCheckout(){
+    $content = Cart::content();
+     $subtotal= Cart::subtotal();
+    return view('customer.checkout', compact('content','subtotal'));
+
+  }
+  public function postCheckout(Request $request){
+    $content = Cart::content();
+     $subtotal= Cart::subtotal();
+   
+            $new = new Order();
+            $new->created_by = 1;
+            $new->customer_id = $request->input('customer_id');
+            $new->customer_group_id = 1;
+            $new->payment_method =$request-> input('payment_method');
+            $new->bank =$request->input('bank');
+            $new->bank_account =$request->input('bank_account');
+
+            $new->contact_name =$request->input('name');
+            $new->contact_address =$request->input('address');
+            $new->contact_phone =$request->input('phone');
+            $new->total = 1;
+            $new->status = 1;
+            $new->save();
+            return redirect('/')->with('notification', 'ddđ');
+        
+  }
 }
 
 

@@ -17,6 +17,7 @@ Route::get('/login','PageController@getLogin');
 Route::post('/login','PageController@postLogin');
 Route::get('/register', 'PageController@getRegister');
 Route::post('/register','PageController@postRegister');
+Route::get('/profile', 'PageController@getProfile');
 
 Route::get('/logout','PageController@getLogout');
 //contact
@@ -47,6 +48,8 @@ Route::delete('/carts/{customer_id}/customer', 'CartController@deleteCartByCusto
 Route::delete('/carts/{customer_id}/{product_id}', 'CartController@deleteProductInCart');
 
 //customer
+Route::get('/checkout', ['as'=>'checkout', 'uses'=>'PageController@getCheckout']);
+Route::post('/checkout', ['as'=>'checkout', 'uses'=>'PageController@postCheckout']);
 
 
 ?>
