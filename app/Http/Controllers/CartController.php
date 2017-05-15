@@ -12,69 +12,26 @@ use App\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class CartController extends Controller
+
+class CartController extends PageController
 {
-
-    public function index()
-    {
-        return Cart::all();
-    }
-
-    public function show($id)
-    {
-        return Cart::with('product')->find($id);
-    }
-
-    public function update(Request $request)
-    {
-        $cart = new Cart();
-    }
-
-    public function destroy($id)
-    {
-        $cart = Cart::find($id)->delete();
-        return response()->json(['success' => trans('message.delete_success')]);
-    }
-
-    public function store(Request $request)
-    {
-        $cart = new Cart();
-        $cart->customer_id = Input::get('customer_id');
-        $cart->product_id = Input::get('product_id');
-        $cart->quantity = Input::get('quantity');
-        $cart->price_output = Input::get('price_output');
-        $cart->save();
-        return Cart::with('product')->find($cart->id);
-    }
-
-    public function updateCartByCustomerId($customerId, $productId)
-    {
-        $cart = Cart::Where('customer_id', $customerId)->where('product_id', $productId)->firstOrFail();
-
-        $cart->quantity = Input::get('quantity');
-        $cart->price_output = Input::get('price_output');
-        $cart->save();
-        return Cart::find($cart->id);
-    }
-
-    public function deleteCartByCustomerId($customerId)
-    {
-        $cart = Cart::where('customer_id', $customerId)->get();
-        foreach ($cart as $item) {
-            $item->delete();
-        }
-        return Cart::get();
-    }
-
-    public function deleteProductInCart($customerId, $productId)
-    {
-        $cart = Cart::Where('customer_id', $customerId)->where('product_id', $productId)->firstOrFail();
-        $cart->delete();
-        return $this->listCartByCustomerId($customerId);
-    }
-
-    public function listCartByCustomerId($customerId)
-    {
-        return Cart::Where('customer_id', $customerId)->with('product')->orderBy('created_at', 'desc')->get();
-    }
+    public function addItem(Request $request, $productId)
+{
+  $product_buy = Product::where('id',$productId)->first();
+  Cart::add(array(
+    'id' => $productId,
+    'name' => $product_buy->name,
+    'qty' =>1,  
+    'price' => $product_buy->web_price,
+    'options' =>array('img'=>$product_buy->default_image)
+    ));
+  $content = Cart::content();
+  
+//dd($content);
+    // $oldCart = Session('cart') ? Session::get('cart'):null;
+    // $cart = new Cart($oldCart);
+    // $cart->add($product, $id);
+    // $request->session()->put('cart', $cart);
+  return redirect()->route('cart');
+}
 }

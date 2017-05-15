@@ -64,8 +64,7 @@
                     <div class="service">
                         <div class="responsive">    
                             <img src="themes/images/feature_img_2.png" alt="" />
-                            <h4>Thiết kế <strong>hiện đại</strong></h4>
-                            <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>                                  
+                            <h4>Thiết kế <strong>hiện đại</strong></h4>                              
                         </div>
                     </div>
                 </div>
@@ -74,7 +73,6 @@
                         <div class="customize">         
                             <img src="themes/images/feature_img_1.png" alt="" />
                             <h4>Giao hàng <strong>miễn phí</strong></h4>
-                            <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
                         </div>
                     </div>
                 </div>
@@ -83,25 +81,12 @@
                         <div class="support">   
                             <img src="themes/images/feature_img_3.png" alt="" />
                             <h4>Hỗ trợ trực tuyến <strong>24/7</strong></h4>
-                            <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
                         </div>
                     </div>
                 </div>  
             </div>      
         </div>              
     </div>
-</section>
-<section class="our_client">
-    <h4 class="title"><span class="text">Thương hiệu</span></h4>
-    
-    <div class="row"> 
-    @foreach($manufacturer as $mf)                  
-        <div class="span2">
-            <a href="#"><img style="width: 120px; height: 45px;" alt="" src="{{$mf->description}}"></a>
-        </div>
-         @endforeach
-   </div>
-  
 </section>
 
 @endsection

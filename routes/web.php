@@ -51,6 +51,9 @@ Route::delete('/carts/{customer_id}/{product_id}', 'CartController@deleteProduct
 Route::get('/checkout', ['as'=>'checkout', 'uses'=>'PageController@getCheckout']);
 Route::post('/checkout', ['as'=>'checkout', 'uses'=>'PageController@postCheckout']);
 
+//search
+Route::get('/search',  ['as'=>'search', 'uses'=>'PageController@searchProduct']);
+
 
 ?>
 

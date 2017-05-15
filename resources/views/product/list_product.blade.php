@@ -38,8 +38,8 @@
 						@if($product_cate->currentPage() != $product_cate->lastPage())
 						<li><a href="{{$product_cate->url($product_cate->currentPage() + 1)}}">Next</a></li>
 						@endif
-					</ul>
-				</div>
+				</ul>
+			</div>
 			</div>
 			<div class="span3 col">
 				<div class="block">	

@@ -1,6 +1,6 @@
 <section class="navbar main-menu">
   <div class="navbar-inner main-menu">                
-    <a href="./" class="logo pull-left"><img src="img/logo.png" class="site_logo" alt=""></a>
+    <a href="./" class="logo pull-left"><img src="img/logo.gif" class="site_logo" alt="" style="height: 40px; width: 120px;"></a>
     <nav id="menu" class="pull-left" style="padding-left: 175px;">
       <ul>
         @foreach($category as $cate)

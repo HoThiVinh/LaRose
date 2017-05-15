@@ -102,10 +102,18 @@ public function getDetailProduct($id){
 public function getListProductByCategoryId($id)
 {
   $product_cate = Product::where('category_id', $id)->paginate(2);
-  $cate = Category::where('id',$product_cate[0]->category_id)->first();
-  $name_cate = Category::where('id', $id)->first();
-  $menu_cate = Category::where('parent_id',$cate->parent_id)->get();
-  return view('product.list_product',compact('product_cate','menu_cate', 'cate', 'name_cate'));
+
+  if(isset($product_cate[0])){
+    $cate = Category::where('id',$product_cate[0]->category_id)->first();
+    $name_cate = Category::where('id', $id)->first();
+    $menu_cate = Category::where('parent_id',$cate->parent_id)->get();
+    return view('product.list_product',compact('product_cate','menu_cate', 'cate', 'name_cate'));
+  } else {
+    $product = Product::orderBy("created_at")->take(4)->get();
+    return view('product.product', compact('product'));
+
+  }
+
 }
 public function getLogin () {
   return view('customer.login');
@@ -262,20 +270,27 @@ public function postCheckout(Request $request){
   $new->status = 1;
   $new->save();
   foreach ($content as $key => $value) {
-  
-  $orderDetail = new OrderDetail();
-  $orderDetail->order_id = $new->id;
-  $orderDetail->product_id = $value->id;
-  $orderDetail->quantity = $value->qty;
-  $orderDetail->total = $value->price;
-  $orderDetail->save();
 
-  Cart::destroy();
+    $orderDetail = new OrderDetail();
+    $orderDetail->order_id = $new->id;
+    $orderDetail->product_id = $value->id;
+    $orderDetail->quantity = $value->qty;
+    $orderDetail->total = $value->price;
+    $orderDetail->save();
 
-  
-}
+    Cart::destroy();
+
+
+  }
   return redirect('/');
 
+}
+
+public function searchProduct(Request $request)
+{
+  $query =$request->input('key');
+  $product = Product::whereRaw('MATCH (name, description) AGAINST (?)', array($query))->paginate(1);
+  return view('page.search', compact('product'));
 }
 }
 
