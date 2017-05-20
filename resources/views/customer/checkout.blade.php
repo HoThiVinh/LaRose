@@ -81,7 +81,30 @@
 						<div class="controls">
 							<input type="text" name="note" class="input-xlarge">
 						</div>
-					</div>			
+					</div>	
+					<input type="checkbox"> Giao hàng đến địa chỉ khác<br><br>
+					<div class="control-group">
+						<label class="control-label">Họ tên
+						</label>
+						<div class="controls">
+							<input type="text" name="name" class="input-xlarge">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Địa chỉ
+						</label>
+						<div class="controls">
+							<input type="text" name="address" class="input-xlarge">
+						</div>
+					</div>								                            
+					<div class="control-group">
+						<label class="control-label">Số điện thoại
+						</label>
+						<div class="controls">
+							<input type="text" name="phone" class="input-xlarge">
+						</div>
+					</div>	
+
 					<hr>
 					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
 				</fieldset>				

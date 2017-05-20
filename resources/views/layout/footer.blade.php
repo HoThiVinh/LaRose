@@ -4,18 +4,17 @@
                         <h4>Về chúng tôi</h4>
                         <ul class="nav">
                             <li><a href="./">Trang chủ</a></li>  
-                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./aboutus">Về chúng tôi</a></li>
                             <li><a href="./contact">Liên hệ</a></li>
                             <li><a href="./cart.html">Giỏ hàng</a></li>
-                            <li><a href="./register.html">Đăng nhập</a></li>                            
+                                                      
                         </ul>                   
                     </div>
                     <div class="span4">
                         <h4>Tài khoản của bạn</h4>
                         <ul class="nav">
-                            <li><a href="#">Tài khoản</a></li>
-                            <li><a href="#">Lịch sử mua hàng</a></li>
-                            <li><a href="#">Sản phẩm quan tâm</a></li>
+                            <li><a href="./login">Đăng nhập</a></li>  
+                            <li><a href="./register">Đăng ký</a></li>  
                         </ul>
                     </div>
                     <div class="span5">

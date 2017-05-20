@@ -39,7 +39,7 @@
     </div>
     <script src="themes/js/common.js"></script>
     <script src="themes/js/jquery.flexslider-min.js"></script>
-  <script src="themes/js/cart.js"></script>
+    <script src="themes/js/cart.js"></script>
     @yield('script')
 </body>
 </html>

@@ -10,7 +10,7 @@ $(document).ready(function () {
 			data: {"_token":token,"id":rowid, "qty":qty},
 			success:function(data) {
 				if(data == "oke"){
-					window.location.href = "cart"
+					window.location.href = '{{ url('/cart') }}';
 				}
 			}
 

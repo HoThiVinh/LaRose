@@ -25,7 +25,7 @@
 									<div class="control-group">
 										<label class="control-label">Họ tên</label>
 										<div class="controls">
-											<input type="text" placeholder="" class="input-xlarge">
+											<input type="text" placeholder="" class="input-xlarge" value="{{Auth::customer()->name}}">
 										</div>
 									</div>
 									<div class="control-group">

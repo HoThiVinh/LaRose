@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
 use Illuminate\Database\DatabaseManager;
@@ -27,6 +27,7 @@ use App\Http\Requests;
 use App\Order;
 use App\OrderDetail;
 use Cart;
+use Request;
 
 
 
@@ -66,6 +67,10 @@ class PageController extends Controller
     $feature_product = Product::orderBy('total_quantity')->take(4)->get();
     $latest_product = Product::orderBy("created_at")->take(4)->get();
     return view('page.index', compact('feature_product','latest_product'));
+  }
+
+  public function getAboutUs(){
+    return view('page.aboutus');
   }
 //contact
   public function getContact()
@@ -115,176 +120,7 @@ public function getListProductByCategoryId($id)
   }
 
 }
-public function getLogin () {
-  return view('customer.login');
-}
-public function postLogin(Request $request)
-{
-  $this->validate($request,[
-    'email'   => 'required|email',
-    'password'  => 'required'
-    ],[
-    'email.required'    => 'Chưa nhập email',
-    'password.required'   => 'Chưa nhập mật khẩu',     
-    ]);
-  $login = [
-  'email' => $request->email,
-  'password' => $request->password
-  ];
 
-  if(Auth::guard('customer')->attempt($login))
-  {
-    return redirect('/');
-  }
-  else {
-    return redirect("login")->with('notification', 'Tài khoản hoặc mật khẩu không đúng');
-  }
-}
-
-public function getRegister() {
- return view('customer.register');
-}
-
-public function postRegister(Request $request)
-{
-  $this->validate($request,[
-    'name'    => 'required|min:3|max:32',
-    'email'   => 'required|email|unique:customer,email',
-    'password'  => 'required|min:4|max:32',
-    'passwordAgain' => 'required|same:password',
-    'address' =>'required',
-    'phone' => 'required'
-    ],[
-    'name.required'     => 'Chưa nhập họ tên',
-    'name.min'        => 'Tên quá ngắn',
-    'name.max'        => 'Tên quá dài',
-    'email.required'    => 'Chưa nhập email',
-    'email.email'       => 'Email không đúng định dạng',
-    'email.unique'      => 'Email đã tồn tại',
-    'passwordAgain.required' => 'Nhập lại mật khẩu',
-    'passwordAgain.same' => 'Mật khẩu không khớp',
-    'password.required'   => 'Chưa nhập mật khẩu',
-    'password.min'      => 'Mật khẩu quá ngắn',
-    'password.max'      => 'Mật khẩu quá dài',
-    'address.required'     => 'Chưa nhập địa chỉ',
-    'phone.required'     => 'Chưa nhập số điện thoại',
-    ]);
-  $customer = new Customer;
-  $customer->name = $request->input('name');
-  $customer->email = $request->input('email');
-  $customer->password = bcrypt($request->input('password'));
-  $customer->address = $request->input('address');
-  $customer->phone = $request->input('phone');
-  $customer->bank = $request->input('bank');
-  $customer->bank_account = $request->input('bank_account');
-  $customer->customer_group_id = 23;
-  $customer->note = $request->input('note');   
-  $customer->save();
-  return redirect('/login')->with('notification', 'Mời bạn đăng nhập tài khoản');
-}
-public function getLogout() {
-  Auth::guard('customer')->logout();
-  return redirect('/');
-}
-
-public function getProfile()
-{
-  return view('customer.profile');
-}
-
-
-public function addItem(Request $request, $productId)
-{
-  $product_buy = Product::where('id',$productId)->first();
-  Cart::add(array(
-    'id' => $productId,
-    'name' => $product_buy->name,
-    'qty' =>1,  
-    'price' => $product_buy->web_price,
-    'options' =>array('img'=>$product_buy->default_image)
-    ));
-  $content = Cart::content();
-  
-//dd($content);
-    // $oldCart = Session('cart') ? Session::get('cart'):null;
-    // $cart = new Cart($oldCart);
-    // $cart->add($product, $id);
-    // $request->session()->put('cart', $cart);
-  return redirect()->route('cart');
-}
-
-public function getCart(){
- $content = Cart::content();
- $subtotal= Cart::subtotal();
- return view('customer.cart', compact('content','subtotal'));
-}
-
-public function deleteItem($id)
-{
-  Cart::remove($id);
-  return redirect()->route('cart');
-}
-
-public function updateCart(Request $request){
-  if($request->ajax()){
-    $id = $request::get('id');
-    $qty = $request::get('qty');
-    Cart::update($id, $qty);
-    echo "oke";
-  }
-}
-
-public function getCheckout(){
-  $content = Cart::content();
-  $subtotal= Cart::subtotal();
-  return view('customer.checkout', compact('content','subtotal'));
-
-}
-public function postCheckout(Request $request){
-  $content = Cart::content();
-  $subtotal= Cart::subtotal();
-  $subtotal = (int)$subtotal;
-
-
-  $customer = new Customer();
-  $customer->name = $request->input('name');
-  $customer->email = $request->input('email');
-  $customer->password = bcrypt($request->input('password'));
-  $customer->address = $request->input('address');
-  $customer->phone = $request->input('phone');
-  $customer->customer_group_id = 23;
-  $customer->note = $request->input('note');   
-  $customer->bank = $request->input('bank');
-  $customer->bank_account = $request->input('bank_account');
-  $customer->save();
-
-  $new = new Order();
-  $new->created_by = $customer->id;
-  $new->customer_id = $customer->id;
-  $new->customer_group_id = 1;
-  $new->email =$request-> input('email');
-  $new->name =$request->input('name');
-  $new->address =$request->input('address');
-  $new->phone =$request->input('phone');
-  $new->total = $subtotal;
-  $new->status = 1;
-  $new->save();
-  foreach ($content as $key => $value) {
-
-    $orderDetail = new OrderDetail();
-    $orderDetail->order_id = $new->id;
-    $orderDetail->product_id = $value->id;
-    $orderDetail->quantity = $value->qty;
-    $orderDetail->total = $value->price;
-    $orderDetail->save();
-
-    Cart::destroy();
-
-
-  }
-  return redirect('/');
-
-}
 
 public function searchProduct(Request $request)
 {
