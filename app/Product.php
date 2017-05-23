@@ -32,4 +32,8 @@ class Product extends Model
     {
         return $this->belongsTo('App\Cart');
     }
+    public function unit()
+    {
+        return $this->belongsTo('App\Unit');
+    }
 }

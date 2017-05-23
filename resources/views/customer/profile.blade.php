@@ -18,64 +18,73 @@
 					</div>
 					<div id="collapseTwo" class="accordion-body collapse">
 						<div class="accordion-inner">
-							<div class="row-fluid">
-								<div class="span6">
-									<h4>Thông tin cá nhân</h4>
-									<br>
-									<div class="control-group">
-										<label class="control-label">Họ tên</label>
-										<div class="controls">
-											<input type="text" placeholder="" class="input-xlarge" value="{{Auth::customer()->name}}">
+							@if(count($errors) > 0)
+							<div class="alert alert-danger">
+								@foreach($errors->all() as $error)
+								{{$error}}<br/>
+								@endforeach
+							</div>
+							@endif
+							@if(session('notification'))
+							<div class="alert alert-success">
+								{{session('notification')}}
+							</div>
+							@endif
+							<form method="POST" action="profile">
+								<input type="hidden" name="_token" value="{{csrf_token()}}">
+								<div class="row-fluid">
+									<div class="span6">
+										<h4>Thông tin cá nhân</h4>
+										<br>
+										<div class="control-group">
+											<label class="control-label">Họ tên</label>
+											<div class="controls">
+												<input type="text" placeholder="" class="input-xlarge" name="name" value="{{$customerlogin->name}}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">Email</label>
+											<div class="controls">
+												<input type="email" placeholder="" class="input-xlarge" name="email" value="{{$customerlogin->email}}">
+											</div>
+										</div>					  
+										<div class="control-group">
+											<label class="control-label">Địa chỉ</label>
+											<div class="controls">
+												<input type="text" placeholder="" class="input-xlarge" name="address" value="{{$customerlogin->address}}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">Số điện thoại</label>
+											<div class="controls">
+												<input type="text" placeholder="" class="input-xlarge phone" name="phone" value="{{$customerlogin->phone}}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">Thông tin thêm</label>
+											<div class="controls">
+												<input type="text" placeholder="" class="input-xlarge" name="note" value="{{$customerlogin->note}}">
+											</div>
 										</div>
 									</div>
-									<div class="control-group">
-										<label class="control-label">Email</label>
-										<div class="controls">
-											<input type="email" placeholder="" class="input-xlarge">
+									<div class="span6">
+										<h4>Thay đổi mật khẩu</h4>
+										<br>
+										<div class="control-group">
+											<label class="control-label">Mật khẩu mới</label>
+											<div class="controls">
+												<input type="password" placeholder="" name="password" class="input-xlarge">
+											</div>
+										</div>					  
+										<div class="control-group">
+											<label class="control-label">Xác nhận mật khẩu mới</label>
+											<div class="controls">
+												<input type="password" placeholder="" name="passwordAgain" class="input-xlarge">
+											</div>
 										</div>
-									</div>					  
-									<div class="control-group">
-										<label class="control-label">Địa chỉ</label>
-										<div class="controls">
-											<input type="text" placeholder="" class="input-xlarge">
-										</div>
+										<button class="btn btn-warning" type="submit" >Lưu thay đổi</button>								
 									</div>
-									<div class="control-group">
-										<label class="control-label">Số điện thoại</label>
-										<div class="controls">
-											<input type="text" placeholder="" class="input-xlarge">
-										</div>
-									</div>
-									<div class="control-group">
-										<label class="control-label">Thông tin thêm</label>
-										<div class="controls">
-											<input type="text" placeholder="" class="input-xlarge">
-										</div>
-									</div>
-								</div>
-								<div class="span6">
-									<h4>Thay đổi mật khẩu</h4>
-									<br>
-									<div class="control-group">
-										<label class="control-label">Mật khẩu hiện tại</label>
-										<div class="controls">
-											<input type="password" placeholder="" class="input-xlarge">
-										</div>
-									</div>
-									<div class="control-group">
-										<label class="control-label">Mật khẩu mới</label>
-										<div class="controls">
-											<input type="password" placeholder="" class="input-xlarge">
-										</div>
-									</div>					  
-									<div class="control-group">
-										<label class="control-label">Xác nhận mật khẩu mới</label>
-										<div class="controls">
-											<input type="password" placeholder="" class="input-xlarge">
-										</div>
-									</div>
-									<button class="btn btn-warning" type="submit" >Lưu thay đổi</button>												
-								</div>
+								</form>
 							</div>
 						</div>
 					</div>

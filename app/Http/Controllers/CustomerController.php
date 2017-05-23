@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Input;
 
 class CustomerController extends Controller
 {
-public function __construct()
+  public function __construct()
   {
     //$this->middleware('customer',['except' => 'getLogout']);
     $category = Category::all();
@@ -59,43 +59,43 @@ public function __construct()
 
 
     if(Auth::guard('customer')->check()){
-      return view()->share('customerlogin', Auth::guard('customer')->Customer());
+      return view()->share('customerlogin', Auth::guard('customer')->user());
     }
     
   }
   
   public function getLogin () {
-  return view('customer.login');
-}
-public function postLogin(Request $request)
-{
-  $this->validate($request,[
-    'email'   => 'required|email',
-    'password'  => 'required'
-    ],[
-    'email.required'    => 'Chưa nhập email',
-    'password.required'   => 'Chưa nhập mật khẩu',     
-    ]);
-  $login = [
-  'email' => $request->email,
-  'password' => $request->password
-  ];
-
-  if(Auth::guard('customer')->attempt($login))
+    return view('customer.login');
+  }
+  public function postLogin(Request $request)
   {
-    return redirect('/');
-  }
-  else {
-    return redirect("login")->with('notification', 'Tài khoản hoặc mật khẩu không đúng');
-  }
-}
+    $this->validate($request,[
+      'email'   => 'required|email',
+      'password'  => 'required'
+      ],[
+      'email.required'    => 'Chưa nhập email',
+      'password.required'   => 'Chưa nhập mật khẩu',     
+      ]);
+    $login = [
+    'email' => $request->email,
+    'password' => $request->password
+    ];
 
-public function getRegister() {
- return view('customer.register');
-}
+    if(Auth::guard('customer')->attempt($login))
+    {
+      return redirect('/');
+    }
+    else {
+      return redirect("login")->with('notification', 'Tài khoản hoặc mật khẩu không đúng');
+    }
+  }
 
-public function postRegister(Request $request)
-{
+  public function getRegister() {
+   return view('customer.register');
+ }
+
+ public function postRegister(Request $request)
+ {
   $this->validate($request,[
     'name'    => 'required|min:3|max:32',
     'email'   => 'required|email|unique:customer,email',
@@ -136,8 +136,43 @@ public function getLogout() {
   return redirect('/');
 }
 
+//Thông tin cá nhân khách hàng
 public function getProfile()
 {
-  return view('customer.profile');
+  $customerlogin = Auth::guard('customer')->user();
+  return view('customer.profile', ['customerlogin'=>$customerlogin]);
+}
+
+public function postProfile(Request $request)
+{
+  $this->validate($request,[
+    'name'    => 'required|min:3|max:32',
+    'email'   => 'required|email',
+    'passwordAgain' => 'same:password',
+    'address' =>'required',
+    'phone' => 'required'
+    ],[
+    'name.required'     => 'Chưa nhập họ tên',
+    'name.min'        => 'Tên quá ngắn',
+    'name.max'        => 'Tên quá dài',
+    'email.required'    => 'Chưa nhập email',
+    'email.email'       => 'Email không đúng định dạng',
+    'passwordAgain.same' => 'Mật khẩu không khớp',
+    'address.required'     => 'Chưa nhập địa chỉ',
+    'phone.required'     => 'Chưa nhập số điện thoại',
+    ]);
+  $customer = Auth::guard('customer')->user();
+  $customer->name = $request->name;
+  $customer->email = $request->email;
+  $customer->password = bcrypt($request->password);
+  $customer->address = $request->address;
+  $customer->phone = $request->phone;
+  $customer->bank = $request->bank;
+  $customer->bank_account = $request->bank_account;
+  $customer->customer_group_id = 23;
+  $customer->note = $request->note;   
+  $customer->save();
+
+  return redirect('/profile')->with('notification', 'Tài khoản của bạn đã cập nhật thành công');
 }
 }

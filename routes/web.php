@@ -19,6 +19,7 @@ Route::post('/login','CustomerController@postLogin');
 Route::get('/register', 'CustomerController@getRegister');
 Route::post('/register','CustomerController@postRegister');
 Route::get('/profile', 'CustomerController@getProfile');
+Route::post('/profile', 'CustomerController@postProfile');
 
 Route::get('/logout','CustomerController@getLogout');
 //contact
@@ -26,7 +27,7 @@ Route::get('contact', 'PageController@getContact');
 Route::post('contact', 'PageController@postContact');
 // Category
 Route::get('products', 'PageController@getSanPham');
-Route::get('products/{id}', 'PageController@getDetailProduct');
+Route::get('products/{id}', ['as'=>'productdetail','uses'=>'PageController@getDetailProduct']);
 Route::get('category/{id}/{name}', 'PageController@getListProductByCategoryId');
 
 

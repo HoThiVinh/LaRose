@@ -57,7 +57,12 @@ class PageController extends Controller
     view()->share('order', $order);
     $orderDetail = OrderDetail::all();
     view()->share('orderdetail', $orderDetail);
-
+     $unit = Unit::all();
+    view()->share('unit', $unit);
+     $tag = Tag::all();
+    view()->share('tag', $tag);
+    $review = Review::all();
+    view()->share('review', $review);
 
     if(Auth::guard('customer')->check()){
       return view()->share('customerlogin', Auth::guard('customer')->Customer());
@@ -139,13 +144,13 @@ public function postReview($id, Request $request)
   $product_id = $id;
   $review = new Review();
   $review->product_id = $product_id;
-  $review->customer_id =Auth::guard('customer')->id;
-  $review->author = Auth::guard('customer')->name;
+  $review->customer_id =Auth::guard('customer')->user()->id;
+  $review->author = Auth::guard('customer')->user()->name;
   $review->title = $request::input('title');
   $review->text = $request::input('text');
   $review->save();
 
-  return redirect('products/$id');
+  return redirect()->route('productdetail', $id);
 
 }
 }

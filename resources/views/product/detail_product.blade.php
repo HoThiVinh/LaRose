@@ -83,32 +83,32 @@
 								</table>
 							</div>
 							<div class="tab-pane" id="review">
-							@if(Auth::guard('customer')->check())
-							<div class="well">
-								<span><strong style="font-size:18px;">Viết bình luận ...</strong></span><i class="fa fa-pencil" aria-hidden="true"></i><br>
-								<form method="POST" action="review/{{$product->id}} " role = "form">
-								<input type="hidden" name="_token" value="{{csrf_token()}}">
-								<label>Chủ đề </label>
-								<div class="form-group">
-										<textarea class="form-group" name= "title" rows="1" style="width: 800px;"></textarea>
-									</div>
-								<label>Nội dung</label>
-									<div class="form-group">
-										<textarea class="form-group" name= "text" rows="3" style="width: 800px;"></textarea>
-									</div>
-									<button type="submit" class="btn btn-warning">Gửi</button>
-								</form>
-							@endif
-							</div>
+								@if(Auth::guard('customer')->check())
+								<div class="well">
+									<span><strong style="font-size:18px;">Viết bình luận ...</strong></span><i class="fa fa-pencil" aria-hidden="true"></i><br>
+									<form method="POST" action="{{ url('review', ['id'=> $product->id]) }}" role = "form">
+										<input type="hidden" name="_token" value="{{csrf_token()}}">
+										<label>Chủ đề </label>
+										<div class="form-group">
+											<textarea class="form-group" name= "title" rows="1" style="width: 800px;"></textarea>
+										</div>
+										<label>Nội dung</label>
+										<div class="form-group">
+											<textarea class="form-group" name= "text" rows="3" style="width: 800px;"></textarea>
+										</div>
+										<button type="submit" class="btn btn-warning">Gửi</button>
+									</form>
+									@endif
+								</div>
 								@foreach($product_review as $review)
 								@if($product->id == $review->product_id)
 								
-									<p>{{$review->author}} &nbsp; {{$review->created_at}}</p>
-									<p>{{$review->text}}</p>
+								<p><strong style="font-size: 14px;">{{$review->author}}</strong> &nbsp; {{$review->created_at}}</p>
+								<p><strong>{{$review->title}}</strong>: {{$review->text}}</p>
 								
 								@endif
 								@endforeach
-						
+
 							</div>
 							<div class="tab-pane" id="tag">
 								@foreach($tag as $tag)
