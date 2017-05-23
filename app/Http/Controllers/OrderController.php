@@ -41,7 +41,6 @@ class OrderController extends Controller
 {
     public function __construct()
   {
-    //$this->middleware('customer',['except' => 'getLogout']);
     $category = Category::all();
     $slide = Slide::all();
     $product = Product::all();
@@ -65,13 +64,15 @@ class OrderController extends Controller
     }
     
   }
-
+//Lấy đơn hàng 
   public function getCheckout(){
   $content = Cart::content();
   $subtotal= Cart::subtotal();
   return view('customer.checkout', compact('content','subtotal'));
 
 }
+
+// Tạo đơn hàng
 public function postCheckout(Request $request){
   $content = Cart::content();
   $subtotal= Cart::subtotal();

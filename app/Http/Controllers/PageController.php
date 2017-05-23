@@ -16,6 +16,8 @@ use App\Manufacturer;
 use App\Customer;
 use App\Review;
 use App\CustomerGroup;
+use App\Unit;
+use App\Tag;
 use Mail;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -97,11 +99,14 @@ class PageController extends Controller
 //Detail Product
 public function getDetailProduct($id){
   $product = Product::find($id);
+  $unit = Unit::where('id', $product->unit_id)->get();
+  $tag = Tag::where('product_id', $id)->get();
   $manufact = Manufacturer::where('id',$product->manufacturer_id)->get();
   $image = Image::where('product_id', $id)->get();
   $product_related = Product::where('category_id',$product->category_id)->where('id','<>',$id)->orderBy('id', 'DESC')->take(4)->get();
   $product_review = Review::where('product_id', $id)->orderBy('created_at')->get();
-  return view('product.detail_product',['product' => $product,'product_related' => $product_related, 'image'=>$image,'manufact'=>$manufact, 'product_review'=>$product_review]);
+  //$customer = Customer::where('id', $product_review->customer_id)->get();
+  return view('product.detail_product',['product' => $product,'product_related' => $product_related, 'image'=>$image,'manufact'=>$manufact, 'product_review'=>$product_review, 'unit'=>$unit, 'tag'=>$tag]);
 }
 //List Product By Category Id
 public function getListProductByCategoryId($id)
@@ -127,6 +132,21 @@ public function searchProduct(Request $request)
   $query =$request->input('key');
   $product = Product::whereRaw('MATCH (name, description) AGAINST (?)', array($query))->paginate(1);
   return view('page.search', compact('product'));
+}
+
+public function postReview($id, Request $request)
+{
+  $product_id = $id;
+  $review = new Review();
+  $review->product_id = $product_id;
+  $review->customer_id =Auth::guard('customer')->id;
+  $review->author = Auth::guard('customer')->name;
+  $review->title = $request::input('title');
+  $review->text = $request::input('text');
+  $review->save();
+
+  return redirect('products/$id');
+
 }
 }
 

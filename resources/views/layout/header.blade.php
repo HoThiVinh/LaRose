@@ -18,8 +18,8 @@ session_start();
                     @if(Auth::guard('customer')->check())
                     <li>
                         <div class="dropdown">
-                        <i class="fa fa-user" aria-hidden="true"></i><a href="" class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Tài khoản
+                        <i class="fa fa-user" aria-hidden="true"></i><a href="" class=" dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> Xin chào 
+                        ({{Auth::guard('customer')->user()->name}})
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             <li><a href="profile">Thông tin tài khoản</a></li>
