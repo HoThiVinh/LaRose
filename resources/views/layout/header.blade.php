@@ -23,7 +23,7 @@ session_start();
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             <li><a href="profile">Thông tin tài khoản</a></li>
-                            <li><a href="#">Lịch sử mua hàng</a></li>
+                            <li><a href="profile">Lịch sử mua hàng</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="logout">Đăng xuất</a></li>
                         </ul>

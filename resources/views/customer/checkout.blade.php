@@ -82,26 +82,33 @@
 							<input type="text" name="note" class="input-xlarge">
 						</div>
 					</div>	
-					<input type="checkbox"> Giao hàng đến địa chỉ khác<br><br>
+					<input type="checkbox" id="otherAddress"> Giao hàng đến địa chỉ khác<br><br>
 					<div class="control-group">
 						<label class="control-label">Họ tên
 						</label>
 						<div class="controls">
-							<input type="text" name="name" class="input-xlarge">
+							<input type="text" name="name-other"  class="input-xlarge other" disabled>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Email
+						</label>
+						<div class="controls">
+							<input type="email" name="email-other"  class="input-xlarge other" disabled>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Địa chỉ
 						</label>
 						<div class="controls">
-							<input type="text" name="address" class="input-xlarge">
+							<input type="text" name="address-other" class="input-xlarge other" disabled>
 						</div>
 					</div>								                            
 					<div class="control-group">
 						<label class="control-label">Số điện thoại
 						</label>
 						<div class="controls">
-							<input type="text" name="phone" class="input-xlarge">
+							<input type="text" name="phone1" class="input-xlarge other" disabled>
 						</div>
 					</div>	
 
@@ -117,6 +124,19 @@
 		$("#actions").click(function (){
 			alert(Bạn đã đặt hàng thành công, chúng tôi sẽ sớm liên lạc đến bạn.);
 		})
+	});
+
+	$(document).ready(function () {
+		$("#otherAddress").change(function() {
+			if($(this).is(":checked"))
+			{
+				$(".other").removeAttr('disabled');
+			}
+			else
+			{
+				$(".other").attr('disabled','');
+			}
+		});
 	});
 </script>
 @endsection
