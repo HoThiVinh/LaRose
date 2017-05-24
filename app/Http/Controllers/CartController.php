@@ -56,12 +56,6 @@ class CartController extends Controller
     view()->share('order', $order);
     $orderDetail = OrderDetail::all();
     view()->share('orderdetail', $orderDetail);
-
-
-    if(Auth::guard('customer')->check()){
-      return view()->share('customerlogin', Auth::guard('customer')->Customer());
-    }
-    
   }
 
   public function addItem(Request $request, $productId)
@@ -79,24 +73,25 @@ class CartController extends Controller
   }
 
   public function getCart(){
-   $content = Cart::content();
-   $subtotal= Cart::subtotal();
-   return view('cart.cart', compact('content','subtotal'));
- }
+    $content = Cart::content();
+    $subtotal= Cart::subtotal();
 
- public function deleteItem($id)
- {
-  Cart::remove($id);
-  return redirect()->route('cart');
-}
-
-public function updateCart(Request $request){
-  if($request->ajax()){
-    $id = $request::get('id');
-    $qty = $request::get('qty');
-    Cart::update($id, $qty);
-    echo "oke";
+    return view('cart.cart', compact('content','subtotal'));
   }
-}
+
+  public function deleteItem($id)
+  {
+    Cart::remove($id);
+    return redirect()->route('cart');
+  }
+
+  public function updateCart(Request $request){
+    if($request->ajax()){
+      $id = $request::get('id');
+      $qty = $request::get('qty');
+      Cart::update($id, $qty);
+      echo "oke";
+    }
+  }
 
 }

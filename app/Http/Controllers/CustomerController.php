@@ -56,12 +56,6 @@ class CustomerController extends Controller
     view()->share('order', $order);
     $orderDetail = OrderDetail::all();
     view()->share('orderdetail', $orderDetail);
-
-
-    if(Auth::guard('customer')->check()){
-      return view()->share('customerlogin', Auth::guard('customer')->user());
-    }
-    
   }
   
   public function getLogin () {

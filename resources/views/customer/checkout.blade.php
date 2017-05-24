@@ -40,7 +40,83 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="span7">					
+			<div class="span7">	
+			@if(Auth::guard('customer')->check())			
+				<h4 class="title"><span class="text"><strong>Thông tin giao hàng</strong></span></h4>
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">Họ tên
+							<span style="color: red;">*</span>
+						</label>
+						<div class="controls">
+							<input type="text" name="name" class="input-xlarge" value="{{$customerlogin->name}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Email
+							<span style="color: red;">*</span>
+						</label>
+						<div class="controls">
+							<input type="email" name="email" class="input-xlarge" value="{{$customerlogin->email}}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Địa chỉ
+							<span style="color: red;">*</span>
+						</label>
+						<div class="controls">
+							<input type="text" name="address" class="input-xlarge" value="{{$customerlogin->address}}">
+						</div>
+					</div>								                            
+					<div class="control-group">
+						<label class="control-label">Số điện thoại
+							<span style="color: red;">*</span>
+						</label>
+						<div class="controls">
+							<input type="text" name="phone" class="input-xlarge" value="{{$customerlogin->phone}}">
+						</div>
+					</div>	
+					<div class="control-group">
+						<label class="control-label">Ghi chú đơn hàng
+						</label>
+						<div class="controls">
+							<input type="text" name="note" class="input-xlarge" value="{{$customerlogin->note}}">
+						</div>
+					</div>	
+					<input type="checkbox" id="otherAddress"> Giao hàng đến địa chỉ khác<br><br>
+					<div class="control-group">
+						<label class="control-label">Họ tên
+						</label>
+						<div class="controls">
+							<input type="text" name="name-other"  class="input-xlarge other" disabled>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Email
+						</label>
+						<div class="controls">
+							<input type="email" name="email-other"  class="input-xlarge other" disabled>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Địa chỉ
+						</label>
+						<div class="controls">
+							<input type="text" name="address-other" class="input-xlarge other" disabled>
+						</div>
+					</div>								                            
+					<div class="control-group">
+						<label class="control-label">Số điện thoại
+						</label>
+						<div class="controls">
+							<input type="text" name="phone-other" class="input-xlarge other" disabled>
+						</div>
+					</div>	
+
+					<hr>
+					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
+				</fieldset>	
+				@else
 				<h4 class="title"><span class="text"><strong>Thông tin giao hàng</strong></span></h4>
 				<fieldset>
 					<div class="control-group">
@@ -108,24 +184,20 @@
 						<label class="control-label">Số điện thoại
 						</label>
 						<div class="controls">
-							<input type="text" name="phone1" class="input-xlarge other" disabled>
+							<input type="text" name="phone-other" class="input-xlarge other" disabled>
 						</div>
 					</div>	
 
 					<hr>
 					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
-				</fieldset>				
+				</fieldset>	
+				@endif			
 			</div>	
 		</form>				
 	</div>
 </section>
+@section('script')
 <script >
-	$(document).ready(function () {
-		$("#actions").click(function (){
-			alert(Bạn đã đặt hàng thành công, chúng tôi sẽ sớm liên lạc đến bạn.);
-		})
-	});
-
 	$(document).ready(function () {
 		$("#otherAddress").change(function() {
 			if($(this).is(":checked"))
@@ -139,4 +211,5 @@
 		});
 	});
 </script>
+@endsection
 @endsection

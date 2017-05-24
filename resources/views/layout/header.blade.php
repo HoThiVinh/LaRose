@@ -13,8 +13,7 @@ session_start();
             <div class="account pull-right">
                 <ul class="user-menu">    
                 <li><a href="#"></a></li>
-                <li><a href="cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng( 
-                )</a></li>
+                <li><a href="cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Giỏ hàng ({{Cart::content()->count($product)}})</a></li>
                     @if(Auth::guard('customer')->check())
                     <li>
                         <div class="dropdown">

@@ -57,18 +57,13 @@ class OrderController extends Controller
     view()->share('order', $order);
     $orderDetail = OrderDetail::all();
     view()->share('orderdetail', $orderDetail);
-
-
-    if(Auth::guard('customer')->check()){
-      return view()->share('customerlogin', Auth::guard('customer')->Customer());
-    }
-    
   }
 //Lấy đơn hàng 
   public function getCheckout(){
     $content = Cart::content();
     $subtotal= Cart::subtotal();
-    return view('customer.checkout', compact('content','subtotal'));
+    $customerlogin = Auth::guard('customer')->user();
+    return view('customer.checkout', compact('content','subtotal', 'customerlogin'));
 
   }
 
@@ -78,42 +73,69 @@ class OrderController extends Controller
     $subtotal= Cart::subtotal();
     $subtotal = (int)$subtotal;
 
+    if(Auth::guard('customer')->check())  
+    {
+      $new = new Order();
+      $new->created_by = Auth::guard('customer')->user()->id;
+      $new->customer_id = Auth::guard('customer')->user()->id;
+      $new->customer_group_id = 1;
+      $new->name =$request->input('name-other');
+      $new->email =$request-> input('email-other');
+      $new->address =$request->input('address-other');
+      $new->phone =$request->input('phone-other');
+      $new->total = $subtotal;
+      $new->status = 1;
+      $new->save();
 
-    $customer = new Customer();
-    $customer->name = $request->input('name');
-    $customer->email = $request->input('email');
-    $customer->password = bcrypt($request->input('password'));
-    $customer->address = $request->input('address');
-    $customer->phone = $request->input('phone');
-    $customer->customer_group_id = 23;
-    $customer->note = $request->input('note');   
-    $customer->bank = $request->input('bank');
-    $customer->bank_account = $request->input('bank_account');
-    $customer->save();
+      foreach ($content as $key => $value) {
+        $orderDetail = new OrderDetail();
+        $orderDetail->order_id = $new->id;
+        $orderDetail->product_id = $value->id;
+        $orderDetail->quantity = $value->qty;
+        $orderDetail->total = $value->price;
+        $orderDetail->save();
 
-    $new = new Order();
-    $new->created_by = $customer->id;
-    $new->customer_id = $customer->id;
-    $new->customer_group_id = 1;
-    $new->name =$request->input('name-other');
-    $new->email =$request-> input('email-other');
-    $new->address =$request->input('address-other');
-    $new->phone =$request->input('phone-other');
-    $new->total = $subtotal;
-    $new->status = 1;
-    $new->save();
+        Cart::destroy();
+      }
+    }
+    else
+    {
+      $customer = new Customer();
+      $customer->name = $request->input('name');
+      $customer->email = $request->input('email');
+      $customer->password = bcrypt($request->input('password'));
+      $customer->address = $request->input('address');
+      $customer->phone = $request->input('phone');
+      $customer->customer_group_id = 23;
+      $customer->note = $request->input('note');   
+      $customer->bank = $request->input('bank');
+      $customer->bank_account = $request->input('bank_account');
+      $customer->save();
 
-    foreach ($content as $key => $value) {
-      $orderDetail = new OrderDetail();
-      $orderDetail->order_id = $new->id;
-      $orderDetail->product_id = $value->id;
-      $orderDetail->quantity = $value->qty;
-      $orderDetail->total = $value->price;
-      $orderDetail->save();
+      $new = new Order();
+      $new->created_by = $customer->id;
+      $new->customer_id = $customer->id;
+      $new->customer_group_id = 1;
+      $new->name =$request->input('name-other');
+      $new->email =$request-> input('email-other');
+      $new->address =$request->input('address-other');
+      $new->phone =$request->input('phone-other');
+      $new->total = $subtotal;
+      $new->status = 1;
+      $new->save();
 
-      Cart::destroy();
+      foreach ($content as $key => $value) {
+        $orderDetail = new OrderDetail();
+        $orderDetail->order_id = $new->id;
+        $orderDetail->product_id = $value->id;
+        $orderDetail->quantity = $value->qty;
+        $orderDetail->total = $value->price;
+        $orderDetail->save();
+
+        Cart::destroy();
 
 
+      }
     }
     echo "<script>
     alert('Đơn hàng đã tạo thành công. Chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất. LaRose cảm ơn bạn đã mua hàng');

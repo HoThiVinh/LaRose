@@ -32,15 +32,12 @@ use Cart;
 use Request;
 
 
-
-
 class PageController extends Controller
 {
   use AuthenticatesUsers;
 
   public function __construct()
   {
-    //$this->middleware('customer',['except' => 'getLogout']);
     $category = Category::all();
     $slide = Slide::all();
     $product = Product::all();
@@ -63,11 +60,6 @@ class PageController extends Controller
     view()->share('tag', $tag);
     $review = Review::all();
     view()->share('review', $review);
-
-    if(Auth::guard('customer')->check()){
-      return view()->share('customerlogin', Auth::guard('customer')->Customer());
-    }
-    
   }
     //home
   public function getIndex(){
@@ -110,7 +102,6 @@ public function getDetailProduct($id){
   $image = Image::where('product_id', $id)->get();
   $product_related = Product::where('category_id',$product->category_id)->where('id','<>',$id)->orderBy('id', 'DESC')->take(4)->get();
   $product_review = Review::where('product_id', $id)->orderBy('created_at')->get();
-  //$customer = Customer::where('id', $product_review->customer_id)->get();
   return view('product.detail_product',['product' => $product,'product_related' => $product_related, 'image'=>$image,'manufact'=>$manufact, 'product_review'=>$product_review, 'unit'=>$unit, 'tag'=>$tag]);
 }
 //List Product By Category Id
