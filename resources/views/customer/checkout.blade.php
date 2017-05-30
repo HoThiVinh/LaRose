@@ -35,7 +35,7 @@
 						<tr>
 							<td><strong>TỔNG HÓA ĐƠN</strong></td>
 							<td>&nbsp;</td>
-							<td><strong>{{$subtotal}} VNĐ</strong></td>
+							<td><strong>{{number_format($subtotal,0,',','.')}} VNĐ</strong></td>
 						</tr>	
 					</tbody>
 				</table>
@@ -44,6 +44,7 @@
 			@if(Auth::guard('customer')->check())			
 				<h4 class="title"><span class="text"><strong>Thông tin giao hàng</strong></span></h4>
 				<fieldset>
+				<div class="pull-left">
 					<div class="control-group">
 						<label class="control-label">Họ tên
 							<span style="color: red;">*</span>
@@ -83,6 +84,8 @@
 							<input type="text" name="note" class="input-xlarge" value="{{$customerlogin->note}}">
 						</div>
 					</div>	
+					</div>
+					<div class="pull-right">
 					<input type="checkbox" id="otherAddress"> Giao hàng đến địa chỉ khác<br><br>
 					<div class="control-group">
 						<label class="control-label">Họ tên
@@ -102,7 +105,7 @@
 						<label class="control-label">Địa chỉ
 						</label>
 						<div class="controls">
-							<input type="text" name="address-other" class="input-xlarge other" disabled>
+							<textarea rows="3" type="text" name="address-other" class="input-xlarge other" disabled></textarea>
 						</div>
 					</div>								                            
 					<div class="control-group">
@@ -112,13 +115,12 @@
 							<input type="text" name="phone-other" class="input-xlarge other" disabled>
 						</div>
 					</div>	
-
-					<hr>
-					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
+					</div>
 				</fieldset>	
 				@else
 				<h4 class="title"><span class="text"><strong>Thông tin giao hàng</strong></span></h4>
 				<fieldset>
+				<div class="pull-left">
 					<div class="control-group">
 						<label class="control-label">Họ tên
 							<span style="color: red;">*</span>
@@ -158,6 +160,8 @@
 							<input type="text" name="note" class="input-xlarge">
 						</div>
 					</div>	
+					</div>
+					<div class="pull-right">
 					<input type="checkbox" id="otherAddress"> Giao hàng đến địa chỉ khác<br><br>
 					<div class="control-group">
 						<label class="control-label">Họ tên
@@ -187,11 +191,10 @@
 							<input type="text" name="phone-other" class="input-xlarge other" disabled>
 						</div>
 					</div>	
-
-					<hr>
-					<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>
+					</div>				
 				</fieldset>	
-				@endif			
+				@endif	
+				<div id="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="ĐẶT HÀNG"></div>		
 			</div>	
 		</form>				
 	</div>

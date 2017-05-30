@@ -4,86 +4,59 @@
 
 @include('layout.menu')
 @include('layout.slide')
-<script>
-$(document).ready(function(){
-<?php for($i=1;$i<20;$i++){?>
-  $('#upCart<?php echo $i;?>').on('change keyup', function(){
-  var newqty = $('#upCart<?php echo $i;?>').val();
-  var rowId = $('#rowId<?php echo $i;?>').val();
-  var proId = $('#proId<?php echo $i;?>').val();
-   if(newqty <=0){ alert('enter only valid qty') }
-  else {
-    $.ajax({
-        type: 'get',
-        dataType: 'html',
-        url: '<?php echo url('/cart/update');?>/'+proId,
-        data: "qty=" + newqty + "& rowId=" + rowId + "& proId=" + proId,
-        success: function (response) {
-            console.log(response);
-            $('#updateDiv').html(response);
-        }
-    });
-  }
-  });
-  <?php } ?>
-});
-</script>
-@if(session('status'))
-        <div class="alert alert-success">
-            {{session('status')}}
-        </div>
-        @endif
-          @if(session('error'))
-        <div class="alert alert-danger">
-            {{session('error')}}
-        </div>
-        @endif
-
 <section class="header_text sub">
-	<h4><span></span></h4>
-<table class="table table-condensed">
-<thead>
-<tr class="cart_menu">
-<td class="image">Item</td>
-<td class="description"></td>
-<td class="price">Price</td>
-<td class="quantity">Quantity</td>
-<td class="total">Total</td>
-<td></td>
-</tr>
-</thead>
-<?php $count =1;?>
-@foreach($cartItems as $cartItem)
-<tbody>
-<tr>
-<td class="cart_product">
-    <a href="{{url('/product_details')}}/{{$cartItem->id}}"><img src="{{$cartItem->options->img}}" alt="" width="200px"></a>
-</td>
-<td class="cart_description">
-    <h4><a href="{{url('/product_details')}}/{{$cartItem->id}}" style="color:blue">{{$cartItem->name}}</a></h4>
-    
-</td>
-<td class="cart_price">
-    <p>${{$cartItem->price}}</p>
-</td>
-<td class="cart_quantity">
-    <div class="cart_quantity_button">
-      <input type="hidden" id="rowId<?php echo $count;?>" value="{{$cartItem->rowId}}"/>
-        <input type="hidden" id="proId<?php echo $count;?>" value="{{$cartItem->id}}"/>
-        <input type="number" size="2" value="{{$cartItem->qty}}" name="qty" id="upCart<?php echo $count;?>"
-               autocomplete="off" style="text-align:center; max-width:50px; "  MIN="1" MAX="30">
+  <h4><span></span></h4>
+</section>
+<section class="main-content">        
+  <div class="row">
+    <div class="span12">          
+      <h4 class="title"><span class="text"><strong>GIỎ HÀNG </strong>CỦA BẠN</span></h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Xóa</th>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach($content as $item)
+        <form method="POST" action="{{ url('updatecart',[$item->id, $item->qty]) }}">
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+          
+          <tr>
+
+            <td><a href="{{ url('deleteitem',['id'=> $item->rowId]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            <td><a href="{{ $item->options->img }}"><img alt="" src='{{ $item->options->img }}' height="50px;" width="50px;"></a></td>
+            <td>{!! $item->name !!}</td>
+            <td><input class="input-mini qty" type="text" placeholder="0" value="{!! $item->qty !!}" name="qty"/>
+            <a href="{{ url('cart') }}" class="updatecart" id="{{$item->rowId}}"><img class="tooltip-test" data-original-title="Update" src="img/update.png" alt=""></a>
+            </td>
+            <td>{{number_format($item->price,0,',','.')}} VNĐ</td>
+            <td>{{number_format($item->price * $item->qty,0,',','.')}} VNĐ</td>
+
+          </tr>
+          @endforeach   
+          </form>
+        </tbody>
+      </table>
+      <hr>
+      <p class="cart-total right" style="font-size: 20px;">
+        
+        <strong>Tổng hóa đơn</strong>: {{number_format($subtotal,0,',','.')}} VNĐ <br>
+      </p>
+      <hr/>
+      <p class="buttons center">        
+        
+         <a href="{{ url('/') }}" class="btn btn-warning pull-left">Tiếp tục mua sắm</a>
+        <a href="{{ url('checkout') }}" class="btn btn-warning pull-right" >Thanh toán</a>
+
+      </p>          
     </div>
-</td>
-<td class="cart_total">
-    <!-- <p class="cart_total_price">${{$cartItem->subtotal}}</p> -->
-</td>
-<td class="cart_delete">
-    <a class="cart_quantity_delete" style="background-color:red"
-       href="{{url('/cart/remove')}}/{{$cartItem->rowId}}"><i class="fa fa-times"></i></a>
-</td>
-</tr>
-<?php $count++;?>
-</tbody>  @endforeach
-</table>
+  </div>
+</section>  
 
 @endsection

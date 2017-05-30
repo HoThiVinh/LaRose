@@ -38,7 +38,7 @@
 		<div class="control-group">
 			<input tabindex="3" class="btn btn-inverse large" type="submit" value="Đăng nhập">
 			<hr>
-			<p class="reset"><a tabindex="4" href="#" title="Recover your username or password">Quên mật khẩu</a></p>
+			<p class="reset"><a tabindex="4" href="#" title="Recover your username or password">Quên mật khẩu ?</a></p>
 		</div>
 	</fieldset>
 </form>		

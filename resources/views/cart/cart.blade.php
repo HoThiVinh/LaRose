@@ -23,32 +23,34 @@
 					</tr>
 				</thead>
 				<tbody>
-				<form method="POST" action="">
+				@foreach($content as $item)
+				<form method="POST" action="{{ url('updatecart',['id'=> $item->rowId, 'qty'=>$item->qty]) }}">
 				<input type="hidden" name="_token" value="{{csrf_token()}}">
-					@foreach($content as $item)
+					
 					<tr>
 
 						<td><a href="{{ url('deleteitem',['id'=> $item->rowId]) }}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
 						<td><a href="{{ $item->options->img }}"><img alt="" src='{{ $item->options->img }}' height="50px;" width="50px;"></a></td>
 						<td>{!! $item->name !!}</td>
-						<td><input class="input-mini qty" type="text" placeholder="0" value="{!! $item->qty !!}" />
-						<a href="#" class="updatecart" id="{{$item->rowId}}"><img class="tooltip-test" data-original-title="Update" src="img/update.png" alt=""></a>
+						<td><input style="width: 30px;" name="qty" type="text" placeholder="0" value="{!! $item->qty !!}" /> 
+						<button type="submit" value="update" style="color: #eb4800; width: 30px;display: inline-block;"><img alt="" src="img/update.png" /></button> 
 						</td>
 						<td>{{number_format($item->price,0,',','.')}} VNĐ</td>
 						<td>{{number_format($item->price * $item->qty,0,',','.')}} VNĐ</td>
 
 					</tr>
-					@endforeach	  
+					@endforeach	
+
 					</form>
 				</tbody>
 			</table>
 			<hr>
 			<p class="cart-total right" style="font-size: 20px;">
 				
-				<strong>Tổng hóa đơn</strong>: {{$subtotal}} VNĐ <br>
+				<strong>Tổng hóa đơn</strong>: {{number_format($subtotal,0,',','.')}} VNĐ <br>
 			</p>
 			<hr/>
-			<p class="buttons center">				
+			<p class="buttons center">		
 				
 				 <a href="{{ url('/') }}" class="btn btn-warning pull-left">Tiếp tục mua sắm</a>
 				<a href="{{ url('checkout') }}" class="btn btn-warning pull-right" >Thanh toán</a>
@@ -57,4 +59,28 @@
 		</div>
 	</div>
 </section>	
+<!-- @section('script')
+<script>
+	$(document).ready(function () {
+	$(".updatecart").click(function (){
+		var rowid = $(this).attr('id');
+		var qty = $(this).parent().find(".qty").val();
+		var token = $("input[name='_token']").val();
+		$.ajax({
+			url: 'updatecart/'+ rowid + '/' + qty,
+			type:'GET',
+			cache:false,
+			data: {"_token":token,"id":rowid, "qty":qty},
+			success:function(data) {
+				if(data == "oke"){
+					window.location = '{{ url("/cart") }}';
+				}
+			}
+
+		});
+	});
+});
+</script>
+@endsection -->
+
 @endsection

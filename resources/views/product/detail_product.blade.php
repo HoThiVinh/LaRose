@@ -39,7 +39,7 @@
 							@endif
 							<br>
 						</address>															
-						<h4><strong>Giá: {{number_format($product->web_price,0,',','.')}}VNĐ</strong></h4>
+						<h4><strong>Giá: {{number_format($product->web_price,0,',','.')}} VNĐ</strong></h4>
 					</div>
 					<div class="span5">
 						<form class="form-inline">
@@ -84,7 +84,6 @@
 							</div>
 							<div class="tab-pane" id="review">
 								@if(Auth::guard('customer')->check())
-								<div class="well">
 									<span><strong style="font-size:18px;">Viết bình luận ...</strong></span><i class="fa fa-pencil" aria-hidden="true"></i><br>
 									<form method="POST" action="{{ url('review', ['id'=> $product->id]) }}" role = "form">
 										<input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -99,7 +98,6 @@
 										<button type="submit" class="btn btn-warning">Gửi</button>
 									</form>
 									@endif
-								</div>
 								@foreach($product_review as $review)
 								@if($product->id == $review->product_id)
 								

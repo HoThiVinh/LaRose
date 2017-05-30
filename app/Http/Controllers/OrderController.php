@@ -62,6 +62,7 @@ class OrderController extends Controller
   public function getCheckout(){
     $content = Cart::content();
     $subtotal= Cart::subtotal();
+    $subtotal = str_replace(',', '', $subtotal);
     $customerlogin = Auth::guard('customer')->user();
     return view('customer.checkout', compact('content','subtotal', 'customerlogin'));
 
@@ -71,7 +72,7 @@ class OrderController extends Controller
   public function postCheckout(Request $request){
     $content = Cart::content();
     $subtotal= Cart::subtotal();
-    $subtotal = (int)$subtotal;
+    $subtotal = str_replace(',', '', $subtotal);
 
     if(Auth::guard('customer')->check())  
     {

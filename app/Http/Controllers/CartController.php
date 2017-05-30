@@ -31,7 +31,8 @@ use App\Http\Requests;
 use App\Order;
 use App\OrderDetail;
 use Cart;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use Request;
 use Illuminate\Support\Facades\Input;
 
 
@@ -75,7 +76,7 @@ class CartController extends Controller
   public function getCart(){
     $content = Cart::content();
     $subtotal= Cart::subtotal();
-
+    $subtotal = str_replace(',', '', $subtotal);
     return view('cart.cart', compact('content','subtotal'));
   }
 
@@ -85,13 +86,22 @@ class CartController extends Controller
     return redirect()->route('cart');
   }
 
-  public function updateCart(Request $request){
-    if($request->ajax()){
-      $id = $request::get('id');
+  public function updateCart(Request $request, $id){
+
       $qty = $request::get('qty');
       Cart::update($id, $qty);
-      echo "oke";
-    }
+      return redirect()->route('cart');
+  
+    
   }
+    public function update(Request $request,$rowId, $qty)
+    {
+
+         $qty = $request::get('qty');
+
+          Cart::update($rowId, $qty);
+
+       return redirect()->route('cart');
+    }
 
 }

@@ -7,9 +7,9 @@
 <section class="header_text sub">
 	<h2><span></span></h2>
 </section>	
-<h4 class="title" style="padding-left: 100px; font-size: 20px;"><span class="text"><strong>GIỚI THIỆU</strong></span></h4>
+<h4 class="title" style=" font-size: 20px;"><span class="text"><strong>GIỚI THIỆU</strong></span></h4>
 <p>Den svenske nasjonaldagen, 6. juni, sammenfaller i år med ramadan. Derfor valgte det svenske generalkonsulatet i Jerusalem å flytte feiringen til 8. mai. Beslutningen har vakt oppsikt på sosiale medier,…</p>
-<h4 class="title" style="padding-left: 100px; font-size: 20px;"><span class="text"><strong>CHÍNH SÁCH GIAO HÀNG</strong></span></h4>
+<h4 class="title" style=" font-size: 20px;"><span class="text"><strong>CHÍNH SÁCH GIAO HÀNG</strong></span></h4>
 <h5>I. Giao hàng toàn quốc</h5>
 <br>
 

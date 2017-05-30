@@ -29,8 +29,8 @@ use App\Http\Requests;
 use App\Order;
 use App\OrderDetail;
 use Cart;
-use Request;
 
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
@@ -71,28 +71,7 @@ class PageController extends Controller
   public function getAboutUs(){
     return view('page.aboutus');
   }
-//contact
-  public function getContact()
-  {     
-   return view('page.contact');
- }
- public function postContact(Request $request)
- {
-   $data = [
-   'ten'=>Request::input('name'), 
-   'emails'=>Request::input('email'),
-   'tinnhan'=>Request::input('body')
-   ];
-   Mail::send('emails.blanks', $data, function ($msg)
-   {
-    $msg->from('vinhht.1993@gmail.com', 'Hồ Vinh');
-    $msg->to('hovinh20122806@gmail.com', 'VinhHT')->subject('Đây là mail Larose');
-  });
-   echo "<script>
-   alert('Cám ơn bạn đã góp ý. Chúng tôi sẽ liên lạc với bạn trong thời gian sớm nhất');
-   window.location = '" .url('./')."'
- </script>";
-}
+
 //Detail Product
 public function getDetailProduct($id){
   $product = Product::find($id);

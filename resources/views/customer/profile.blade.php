@@ -30,7 +30,7 @@
 								{{session('notification')}}
 							</div>
 							@endif
-							<form method="POST" action="profile">
+							<form method="POST" action="{{ url('profile') }}">
 								<input type="hidden" name="_token" value="{{csrf_token()}}">
 								<div class="row-fluid">
 									<div class="span6">
@@ -45,7 +45,7 @@
 										<div class="control-group">
 											<label class="control-label">Email</label>
 											<div class="controls">
-												<input type="email" placeholder="" class="input-xlarge" name="email" value="{{$customerlogin->email}}">
+												<input type="email" placeholder="" class="input-xlarge" name="email" value="{{$customerlogin->email}}" readonly>
 											</div>
 										</div>					  
 										<div class="control-group">
@@ -70,16 +70,17 @@
 									<div class="span6">
 										<h4>Thay đổi mật khẩu</h4>
 										<br>
+										<input type="checkbox" id="changePassword" name="changePassword"> Đổi mật khẩu<br><br>
 										<div class="control-group">
 											<label class="control-label">Mật khẩu mới</label>
 											<div class="controls">
-												<input type="password" placeholder="" name="password" class="input-xlarge">
+												<input type="password" placeholder="" name="password" class="input-xlarge password" disabled>
 											</div>
 										</div>					  
 										<div class="control-group">
 											<label class="control-label">Xác nhận mật khẩu mới</label>
 											<div class="controls">
-												<input type="password" placeholder="" name="passwordAgain" class="input-xlarge">
+												<input type="password" placeholder="" name="passwordAgain" class="input-xlarge password" disabled>
 											</div>
 										</div>
 										<button class="btn btn-warning" type="submit" >Lưu thay đổi</button>								
@@ -93,22 +94,43 @@
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Lịch sử mua hàng</a>
 					</div>
-					<div id="collapseThree" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<div class="row-fluid">
-								<div class="control-group">
-									<label for="textarea" class="control-label">Comments</label>
-									<div class="controls">
-										<textarea rows="3" id="textarea" class="span12"></textarea>
-									</div>
-								</div>									
-								<button class="btn btn-inverse pull-right">Confirm order</button>
-							</div>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<ul class="list-group">
+								@foreach($order as $key=>$item)
+
+								<li class="list-group-item">
+									{{$item->id}}<br><br>
+									
+									{{$orderdetail[$key][0]->id}}
+									
+								</li>
+								@endforeach
+							</ul>
+
 						</div>
+						
 					</div>
 				</div>
-			</div>				
-		</div>
+			</div>
+		</div>				
 	</div>
-</section>			
+</div>
+</section>	
+@section('script')
+<script >
+	$(document).ready(function () {
+		$("#changePassword").change(function() {
+			if($(this).is(":checked"))
+			{
+				$(".password").removeAttr('disabled');
+			}
+			else
+			{
+				$(".password").attr('disabled','');
+			}
+		});
+	});
+</script>
+@endsection		
 @endsection

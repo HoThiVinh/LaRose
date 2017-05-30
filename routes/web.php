@@ -21,10 +21,15 @@ Route::post('/register','CustomerController@postRegister');
 Route::get('/profile', 'CustomerController@getProfile');
 Route::post('/profile', 'CustomerController@postProfile');
 
+//Password Reset
+Route::get('password/reset',['as'=>'password.reset', 'uses'=>'CustomerController@showLinkRequestForm']);
+Route::post('password/email', ['as'=>'password.reset', 'uses'=>'CustomerController@sendResetLinkEmail']);
+
+
 Route::get('/logout','CustomerController@getLogout');
 //contact
-Route::get('contact', 'PageController@getContact');
-Route::post('contact', 'PageController@postContact');
+Route::get('contact', 'ContactController@getContact');
+Route::post('contact', 'ContactController@postContact');
 // Category
 Route::get('products', 'PageController@getSanPham');
 Route::get('products/{id}', ['as'=>'productdetail','uses'=>'PageController@getDetailProduct']);
@@ -35,7 +40,10 @@ Route::get('category/{id}/{name}', 'PageController@getListProductByCategoryId');
 Route::get('addproducttocart/{id}/{productname}', ['as'=>'addproducttocart', 'uses'=>'CartController@addItem']);
 Route::get('cart', ['as'=>'cart', 'uses'=> 'CartController@getCart']);
 Route::get('deleteitem/{id}',['as'=>'deleteitem', 'uses'=>'CartController@deleteItem']);
-Route::get('updatecart/{id}/{qty}',['as'=>'updatecart', 'uses'=>'CartController@updateCart']);
+Route::post('updatecart/{id}/{qty}',['as'=>'updatecart', 'uses'=>'CartController@update']);
+
+
+
 
 //customer
 Route::get('/checkout', ['as'=>'checkout', 'uses'=>'OrderController@getCheckout']);
