@@ -94,22 +94,35 @@
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Lịch sử mua hàng</a>
 					</div>
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<ul class="list-group">
+					<div id="collapseThree" class="accordion-body collapse">
+						<div class="accordion-inner">
+							<div class="panel panel-default" style="padding-left: 180px;">
 								@foreach($order as $key=>$item)
-
-								<li class="list-group-item">
-									{{$item->id}}<br><br>
+								<div class="panel-body" style="background-position: center;">
+									<table class="table" style="border: 1px solid #eaeaea; width: 800px;">
+										<thead>
+											<tr>
+												<th>{{$item->created_at}}</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach($orderdetail[$key] as $index=>$orderItem)
+											<tr>
+												<td>{{ $orderItem->quantity }} x {!! $product[$key][$index]->first()->name !!} </td>
+												<td>{{number_format($orderItem->total,0,',','.')}} VNĐ</td>
+											</tr> 
+											@endforeach
+											<tr style="background-color: #fff7e6;">
+												<td><strong>TỔNG HÓA ĐƠN</strong></td>
+												<td><strong>{{number_format($item->total,0,',','.')}} VNĐ</strong></td>
+											</tr>	
+											@endforeach
+										</tbody>
+									</table>
 									
-									{{$orderdetail[$key][0]->id}}
-									
-								</li>
-								@endforeach
-							</ul>
-
+							</div>
 						</div>
-						
 					</div>
 				</div>
 			</div>

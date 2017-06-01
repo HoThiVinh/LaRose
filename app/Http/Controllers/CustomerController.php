@@ -167,70 +167,76 @@ class CustomerController extends Controller
 //Thông tin cá nhân khách hàng
   public function getProfile()
   {
-    $customerlogin = Auth::guard('customer')->user();
-    $order = Order::where('customer_id', $customerlogin->id)->get();
-        $orderdetail = array();
-        for($i = 0; $i<count($order); $i++) {
-            $orderdetailItem = OrderDetail::where('order_id', $order[$i]->id)->get();
-            array_push($orderdetail, $orderdetailItem);
-        }
-            // return view('customer.profile', compact('customerlogin','order','orderdetail'));
    
+    $customerlogin = Auth::guard('customer')->user();
+    $order = Order::where('customer_id', $customerlogin->id)->orderBy("created_at", 'desc')->get();
 
-  
-   $product = array();
-  
-     for($j=0; $j<count($orderdetailItem);$j++){
-      $productItem = Product::where('id',$orderdetailItem[$j]->product_id)->get();
-      array_push($product, $productItem);
-      // return view('customer.profile', compact('customerlogin','product'));
+    $orderdetail = array();
+    for($i = 0; $i<count($order); $i++) {
+      $orderdetailItem = OrderDetail::where('order_id', $order[$i]->id)->get();
+      array_push($orderdetail, $orderdetailItem);
 
     }
-    return $product;
-//return view('customer.profile', compact('customerlogin'));
-  }
 
-  public function postProfile(Request $request)
+    $product = array();
+    for ($j=0; $j <count($orderdetail) ; $j++) { 
+      for ($j=0; $j <count($orderdetail) ; $j++) {
+        $productItem = array();
+        foreach ($orderdetail[$j] as $item) {
+         $subProductItem = Product::where('id',$item->product_id)->get();
+         array_push($productItem, $subProductItem);   
+         
+       }
+       array_push($product, $productItem);
+     }
+
+
+   }
+  return view('customer.profile', compact('customerlogin','order','orderdetail', 'product'));
+
+ }
+
+ public function postProfile(Request $request)
+ {
+  $this->validate($request,[
+    'name'    => 'required|min:3|max:32',
+    'email'   => 'required|email',
+    'address' =>'required',
+    'phone' => 'required'
+    ],[
+    'name.required'     => 'Chưa nhập họ tên',
+    'name.min'        => 'Tên quá ngắn',
+    'name.max'        => 'Tên quá dài',
+    'email.required'    => 'Chưa nhập email',
+    'email.email'       => 'Email không đúng định dạng',
+    'address.required'     => 'Chưa nhập địa chỉ',
+    'phone.required'     => 'Chưa nhập số điện thoại',
+    ]);
+  $customer = Auth::guard('customer')->user();
+  $customer->name = $request->name;
+  $customer->email = $request->email;
+  if($request->changePassword == "on")
   {
     $this->validate($request,[
-      'name'    => 'required|min:3|max:32',
-      'email'   => 'required|email',
-      'address' =>'required',
-      'phone' => 'required'
+      'password'  => 'required|min:4|max:32',
+      'passwordAgain' => 'required|same:password',
       ],[
-      'name.required'     => 'Chưa nhập họ tên',
-      'name.min'        => 'Tên quá ngắn',
-      'name.max'        => 'Tên quá dài',
-      'email.required'    => 'Chưa nhập email',
-      'email.email'       => 'Email không đúng định dạng',
-      'address.required'     => 'Chưa nhập địa chỉ',
-      'phone.required'     => 'Chưa nhập số điện thoại',
+      'passwordAgain.required' => 'Nhập lại mật khẩu',
+      'passwordAgain.same' => 'Mật khẩu không khớp',
+      'password.required'   => 'Chưa nhập mật khẩu',
+      'password.min'      => 'Mật khẩu quá ngắn',
+      'password.max'      => 'Mật khẩu quá dài',
       ]);
-    $customer = Auth::guard('customer')->user();
-    $customer->name = $request->name;
-    $customer->email = $request->email;
-    if($request->changePassword == "on")
-    {
-      $this->validate($request,[
-        'password'  => 'required|min:4|max:32',
-        'passwordAgain' => 'required|same:password',
-        ],[
-        'passwordAgain.required' => 'Nhập lại mật khẩu',
-        'passwordAgain.same' => 'Mật khẩu không khớp',
-        'password.required'   => 'Chưa nhập mật khẩu',
-        'password.min'      => 'Mật khẩu quá ngắn',
-        'password.max'      => 'Mật khẩu quá dài',
-        ]);
-      $customer->password = bcrypt($request->password);
-    }
-    $customer->address = $request->address;
-    $customer->phone = $request->phone;
-    $customer->bank = $request->bank;
-    $customer->bank_account = $request->bank_account;
-    $customer->customer_group_id = 23;
-    $customer->note = $request->note;   
-    $customer->save();
-
-    return redirect('/profile')->with('notification', 'Tài khoản của bạn đã cập nhật thành công');
+    $customer->password = bcrypt($request->password);
   }
+  $customer->address = $request->address;
+  $customer->phone = $request->phone;
+  $customer->bank = $request->bank;
+  $customer->bank_account = $request->bank_account;
+  $customer->customer_group_id = 23;
+  $customer->note = $request->note;   
+  $customer->save();
+
+  return redirect('/profile')->with('notification', 'Tài khoản của bạn đã cập nhật thành công');
+}
 }
