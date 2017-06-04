@@ -59,7 +59,9 @@
 							<li><a href="#tag">Tag</a> </li>
 						</ul>							 
 						<div class="tab-content" >
-							<div class="tab-pane active" id="home">{{$product->description}}</div>
+							<div class="tab-pane active" id="home">{{$product->description}}<br><br>
+							<strong>HƯỚNG DẪN SỬ DỤNG:<br></strong> {{$product->user_guide}}
+							</div>
 							<div class="tab-pane" id="profile">
 								<table class="table table-striped shop_attributes" style="width: 500px;">	
 									<tbody>
@@ -79,6 +81,11 @@
 										</tr>
 										@endif
 										@endforeach
+										<tr class="alt">
+											<th>Bảo hành</th>
+											<td>{{$product->warranty_period}} tháng</td>
+										</tr>
+										
 									</tbody>
 								</table>
 							</div>
@@ -135,7 +142,7 @@
 										<li class="span3">
 											<div class="product-box">
 												<span class="sale_tag"></span>												
-												<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}"></a><br/>
+												<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" style="width: 270px; height:250px;"></a><br/>
 												<a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
 												<p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
 											</div>

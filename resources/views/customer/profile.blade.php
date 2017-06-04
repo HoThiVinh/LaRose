@@ -113,7 +113,7 @@
 												<td>{{number_format($orderItem->total,0,',','.')}} VNĐ</td>
 											</tr> 
 											@endforeach
-											<tr style="background-color: #fff7e6;">
+											<tr style="background-color: #ffcc99;">
 												<td><strong>TỔNG HÓA ĐƠN</strong></td>
 												<td><strong>{{number_format($item->total,0,',','.')}} VNĐ</strong></td>
 											</tr>	

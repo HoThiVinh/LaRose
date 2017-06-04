@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Password;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
 use Illuminate\Database\DatabaseManager;
@@ -30,23 +30,23 @@ use App\Order;
 use App\OrderDetail;
 use Cart;
 
-class ForgotPasswordController extends Controller
+class ResetPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
     | Password Reset Controller
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
+    | This controller is responsible for handling password reset requests
+    | and uses a simple trait to include this behavior. You're free to
+    | explore this trait and override any methods you wish to tweak.
     |
     */
 
-    use SendsPasswordResetEmails;
-       public function __construct()
+    use ResetsPasswords;
+    public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest:customer');
         $category = Category::all();
         $slide = Slide::all();
         $product = Product::all();
@@ -71,10 +71,18 @@ class ForgotPasswordController extends Controller
         view()->share('review', $review);
     }
 
+
+    /**
+     * Where to redirect users after resetting their password.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/';
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    
+   
 }

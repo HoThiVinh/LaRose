@@ -19,26 +19,16 @@
 					</ul>
 				</div>
 				<div class="block">								
-					<h4 class="title"><strong>Best</strong> Seller</h4>								
+					<h4 class="title"><strong>SẢN PHẨM BÁN CHẠY</strong></h4>								
 					<ul class="small-product">
+					@foreach($best_pro as $best_pro)
 						<li>
-							<a href="#" title="Praesent tempor sem sodales">
-								<img src="themes/images/ladies/3.jpg" alt="Praesent tempor sem sodales">
+							<a href="products/{{$pro->id}}" title="Praesent tempor sem sodales">
+								<img src="{{$best_pro->default_image}}" alt="Praesent tempor sem sodales">
 							</a>
-							<a href="#">Praesent tempor sem</a>
+							<a href="products/{{$pro->id}}">{{$best_pro->name}}</a>
 						</li>
-						<li>
-							<a href="#" title="Luctus quam ultrices rutrum">
-								<img src="themes/images/ladies/4.jpg" alt="Luctus quam ultrices rutrum">
-							</a>
-							<a href="#">Luctus quam ultrices rutrum</a>
-						</li>
-						<li>
-							<a href="#" title="Fusce id molestie massa">
-								<img src="themes/images/ladies/5.jpg" alt="Fusce id molestie massa">
-							</a>
-							<a href="#">Fusce id molestie massa</a>
-						</li>   
+						@endforeach
 					</ul>
 				</div>
 			</div>

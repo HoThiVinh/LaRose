@@ -17,7 +17,7 @@
 				@foreach($product_cate as $pro)
 				<li class="span3">
 					<div class="product-box">												
-						<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" height="250px;"></a><br/>
+						<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" style="width: 200px; height:250px;" ></a><br/>
 						<a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
 						<a class="category">{{$name_cate->name}}</a>
 						<p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
@@ -38,44 +38,33 @@
 						@if($product_cate->currentPage() != $product_cate->lastPage())
 						<li><a href="{{$product_cate->url($product_cate->currentPage() + 1)}}">Next</a></li>
 						@endif
-				</ul>
-			</div>
+					</ul>
+				</div>
 			</div>
 			<div class="span3 col">
 				<div class="block">	
 					<ul class="nav nav-list">
-						<li class="nav-header">Category</li>
+						<h4 class="title"><strong>DANH MỤC SẢN PHẨM</strong></h4>
 						@foreach($menu_cate as $item_cate)
 						<li><a href="category/{{$item_cate->id}}/{{$item_cate->name}}">{{$item_cate->name}}</a></li>
 						@endforeach
 					</ul>
 				</div>
 				<div class="block">								
-					<h4 class="title"><strong>Best</strong> Seller</h4>								
+					<h4 class="title"><strong>SẢN PHẨM BÁN CHẠY</strong></h4>								
 					<ul class="small-product">
+					@foreach($best_pro as $best_pro)
 						<li>
-							<a href="#" title="Praesent tempor sem sodales">
-								<img src="themes/images/ladies/3.jpg" alt="Praesent tempor sem sodales">
+							<a href="products/{{$pro->id}}" title="Praesent tempor sem sodales">
+								<img src="{{$best_pro->default_image}}" alt="Praesent tempor sem sodales">
 							</a>
-							<a href="#">Praesent tempor sem</a>
+							<a href="products/{{$pro->id}}">{{$best_pro->name}}</a>
 						</li>
-						<li>
-							<a href="#" title="Luctus quam ultrices rutrum">
-								<img src="themes/images/ladies/4.jpg" alt="Luctus quam ultrices rutrum">
-							</a>
-							<a href="#">Luctus quam ultrices rutrum</a>
-						</li>
-						<li>
-							<a href="#" title="Fusce id molestie massa">
-								<img src="themes/images/ladies/5.jpg" alt="Fusce id molestie massa">
-							</a>
-							<a href="#">Fusce id molestie massa</a>
-						</li>   
+						@endforeach
 					</ul>
 				</div>
 			</div>
 		</div>
 		
 	</section>
-
 	@endsection

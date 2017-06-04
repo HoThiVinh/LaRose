@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Password;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
     use SendsPasswordResetEmails;
        public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest:customer');
         $category = Category::all();
         $slide = Slide::all();
         $product = Product::all();
@@ -71,10 +71,15 @@ class ForgotPasswordController extends Controller
         view()->share('review', $review);
     }
 
-    /**
-     * Create a new controller instance.
+   
+        /**
+     * Display the form to request a password reset link.
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
+    public function showLinkRequestForm()
+    {
+        return view('customer.passwords.email');
+    }
     
 }

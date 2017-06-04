@@ -22,9 +22,10 @@ Route::get('/profile', 'CustomerController@getProfile');
 Route::post('/profile', 'CustomerController@postProfile');
 
 //Password Reset
-Route::get('password/reset',['as'=>'password.reset', 'uses'=>'CustomerController@showLinkRequestForm']);
-Route::post('password/email', ['as'=>'password.reset', 'uses'=>'CustomerController@sendResetLinkEmail']);
-
+Route::get('password/reset', 'Password\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/reset', 'Password\ResetPasswordController@reset');
+Route::post('password/email', 'Password\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}','Password\ResetPasswordController@showResetForm')->name('password.reset');
 
 Route::get('/logout','CustomerController@getLogout');
 //contact

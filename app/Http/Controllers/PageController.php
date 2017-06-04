@@ -29,6 +29,7 @@ use App\Http\Requests;
 use App\Order;
 use App\OrderDetail;
 use Cart;
+use DB;
 
 use Illuminate\Http\Request;
 
@@ -86,16 +87,18 @@ public function getDetailProduct($id){
 //List Product By Category Id
 public function getListProductByCategoryId($id)
 {
-  $product_cate = Product::where('category_id', $id)->paginate(2);
+  $bestsell = DB::table('detail_order')->select(DB::raw('count(product_id) as number, product_id'))->groupBy('product_id')->orderBy('number', 'DESC')->take(4)->get();
+  $best_pro = Product::wherein('id',[$bestsell[0]->product_id, $bestsell[1]->product_id, $bestsell[2]->product_id, $bestsell[3]->product_id])->get();
+  $product_cate = Product::where('category_id', $id)->paginate(9);
 
   if(isset($product_cate[0])){
     $cate = Category::where('id',$product_cate[0]->category_id)->first();
     $name_cate = Category::where('id', $id)->first();
     $menu_cate = Category::where('parent_id',$cate->parent_id)->get();
-    return view('product.list_product',compact('product_cate','menu_cate', 'cate', 'name_cate'));
+    return view('product.list_product',compact('product_cate','menu_cate', 'cate', 'name_cate', 'best_pro'));
   } else {
     $product = Product::orderBy("created_at")->take(4)->get();
-    return view('product.product', compact('product'));
+    return view('product.product', compact('product','best_pro'));
 
   }
 
@@ -105,7 +108,7 @@ public function getListProductByCategoryId($id)
 public function searchProduct(Request $request)
 {
   $query =$request->input('key');
-  $product = Product::whereRaw('MATCH (name, description) AGAINST (?)', array($query))->paginate(1);
+  $product = Product::whereRaw('MATCH (name, description) AGAINST (?)', array($query))->paginate(9);
   return view('page.search', compact('product'));
 }
 

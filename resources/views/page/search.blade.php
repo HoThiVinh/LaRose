@@ -29,28 +29,16 @@
                                 </ul>
                                 <br>
                                 <div class="pagination pagination-small pagination-centered">
-                                    <ul>
-                                        @if($product->currentPage() !=1)
-                                        <li><a href="{{$product->url($product->currentPage() - 1)}}">Prev</a></li>
-                                        @endif
-                                        @for($i = 1 ; $i <= $product->lastPage() ; $i = $i + 1)
-                                        <li class="{{($product->currentPage() == $i) ? 'active' : ''}}">
-                                            <a href="{{$product->url($i)}}">{{$i}}</a></li>
-                                            @endfor
-                                            @if($product->currentPage() != $product->lastPage())
-                                            <li><a href="{{$product->url($product->currentPage() + 1)}}">Next</a></li>
-                                            @endif
-                                        </ul>
-                                    </div>    
-                                </div>                          
-                            </div>  
-                        </div>
-                    </div> 
-                </div>
-                
-                <br/>
-            </div>              
-        </div>
-    </section>
+                                  
+                                </div>    
+                            </div>                          
+                        </div>  
+                    </div>
+                </div> 
+            </div>    
+            <br/>
+        </div>              
+    </div>
+</section>
 
-    @endsection
+@endsection

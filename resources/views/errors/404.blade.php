@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.index')
 
 @section('title')
     404 error
