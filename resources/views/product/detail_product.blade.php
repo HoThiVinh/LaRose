@@ -144,7 +144,7 @@
 												<span class="sale_tag"></span>												
 												<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" style="width: 270px; height:250px;"></a><br/>
 												<a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
-												<p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
+												<p class="price">{{number_format($pro->web_price,0,',','.')}} VNĐ</p>
 											</div>
 										</li>
 

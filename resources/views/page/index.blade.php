@@ -23,7 +23,7 @@
                                         <div class="product-box">
                                             <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" style="width: 270px; height:280px;" alt="" /></a></p>
                                             <a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
-                                            <p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
+                                            <p class="price">{{number_format($pro->web_price,0,',','.')}} VNĐ</p>
                                         </div>
                                     </li>
                                     @endforeach
@@ -48,7 +48,7 @@
                                         <div class="product-box">
                                             <p><a href="products/{{$pro->id}}"><img src="{{$pro->default_image}}" alt="" style="width: 270px; height:280px;" /></a></p>
                                             <a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
-                                            <p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
+                                            <p class="price">{{number_format($pro->web_price,0,',','.')}} VNĐ</p>
                                         </div>
                                     </li>
                                     @endforeach

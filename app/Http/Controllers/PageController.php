@@ -30,8 +30,9 @@ use App\Order;
 use App\OrderDetail;
 use Cart;
 use DB;
-
 use Illuminate\Http\Request;
+// use Request;
+
 
 class PageController extends Controller
 {
@@ -81,7 +82,7 @@ public function getDetailProduct($id){
   $manufact = Manufacturer::where('id',$product->manufacturer_id)->get();
   $image = Image::where('product_id', $id)->get();
   $product_related = Product::where('category_id',$product->category_id)->where('id','<>',$id)->orderBy('id', 'DESC')->take(4)->get();
-  $product_review = Review::where('product_id', $id)->orderBy('created_at')->get();
+  $product_review = Review::where('product_id', $id)->orderBy('created_at', 'DESC')->get();
   return view('product.detail_product',['product' => $product,'product_related' => $product_related, 'image'=>$image,'manufact'=>$manufact, 'product_review'=>$product_review, 'unit'=>$unit, 'tag'=>$tag]);
 }
 //List Product By Category Id
@@ -112,20 +113,7 @@ public function searchProduct(Request $request)
   return view('page.search', compact('product'));
 }
 
-public function postReview($id, Request $request)
-{
-  $product_id = $id;
-  $review = new Review();
-  $review->product_id = $product_id;
-  $review->customer_id =Auth::guard('customer')->user()->id;
-  $review->author = Auth::guard('customer')->user()->name;
-  $review->title = $request::input('title');
-  $review->text = $request::input('text');
-  $review->save();
 
-  return redirect()->route('productdetail', $id);
-
-}
 }
 
 

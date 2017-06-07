@@ -130,7 +130,7 @@ class CustomerController extends Controller
       'password'  => 'required|min:4|max:32',
       'passwordAgain' => 'required|same:password',
       'address' =>'required',
-      'phone' => 'required'
+      'phone' => 'required|max:11'
       ],[
       'name.required'     => 'Chưa nhập họ tên',
       'name.min'        => 'Tên quá ngắn',
@@ -145,6 +145,7 @@ class CustomerController extends Controller
       'password.max'      => 'Mật khẩu quá dài',
       'address.required'     => 'Chưa nhập địa chỉ',
       'phone.required'     => 'Chưa nhập số điện thoại',
+      'phone.max' => 'Số điện thoại quá dài'
       ]);
     $customer = new Customer;
     $customer->name = $request->input('name');
@@ -202,7 +203,7 @@ class CustomerController extends Controller
     'name'    => 'required|min:3|max:32',
     'email'   => 'required|email',
     'address' =>'required',
-    'phone' => 'required'
+    'phone' => 'required|max:11'
     ],[
     'name.required'     => 'Chưa nhập họ tên',
     'name.min'        => 'Tên quá ngắn',
@@ -211,6 +212,7 @@ class CustomerController extends Controller
     'email.email'       => 'Email không đúng định dạng',
     'address.required'     => 'Chưa nhập địa chỉ',
     'phone.required'     => 'Chưa nhập số điện thoại',
+     'phone.max' => 'Số điện thoại quá dài'
     ]);
   $customer = Auth::guard('customer')->user();
   $customer->name = $request->name;
@@ -239,4 +241,5 @@ class CustomerController extends Controller
 
   return redirect('/profile')->with('notification', 'Tài khoản của bạn đã cập nhật thành công');
 }
+
 }

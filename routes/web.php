@@ -53,7 +53,9 @@ Route::post('/checkout', ['as'=>'checkout', 'uses'=>'OrderController@postCheckou
 //search
 Route::get('/search',  ['as'=>'search', 'uses'=>'PageController@searchProduct']);
 
-Route::post('/review/{id}', 'PageController@postReview');
+//Review
+
+Route::post('/review/{id}', 'ReviewController@postReview');
 
 ?>
 

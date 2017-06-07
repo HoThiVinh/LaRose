@@ -20,7 +20,7 @@
 						<a href="products/{{$pro->id}}"><img alt="" src="{{$pro->default_image}}" style="width: 200px; height:250px;" ></a><br/>
 						<a href="products/{{$pro->id}}" class="title">{{$pro->name}}</a><br/>
 						<a class="category">{{$name_cate->name}}</a>
-						<p class="price">{{number_format($pro->web_price,0,',','.')}}VNĐ</p>
+						<p class="price">{{number_format($pro->web_price,0,',','.')}} VNĐ</p>
 					</div>
 				</li>
 				@endforeach
